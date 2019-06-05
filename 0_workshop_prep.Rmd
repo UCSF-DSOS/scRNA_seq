@@ -1,0 +1,13 @@
+---
+title: "Workshop Setup"
+author: "Angelo Pelonero"
+date: "6/3/2019"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+use install_load fucntion to install necessary pacakges
