@@ -87,7 +87,7 @@ DimPlot(immune.combined, reduction = "umap", split.by = "stim")
 
 ### Identify conserved cell markers
 
-To identify canonical cell type marker genes that are conserved across conditions, we provide the FindConservedMarkers function. This function performs differential gene expression testing for each dataset/group and combines the p-values using meta-analysis methods from the MetaDE R package. For example, we can calculated the genes that are conserved markers irrespective of stimulation condition in cluster 6 (NK cells).
+To identify canonical cell type marker genes that are conserved across conditions, we provide the `FindConservedMarkers` function. This function performs differential gene expression testing for each dataset/group and combines the p-values using meta-analysis methods from the MetaDE R package. For example, we can calculate the genes that are conserved markers irrespective of stimulation condition in cluster 6 (NK cells).
 
 ```{r}
 DefaultAssay(immune.combined) <- "RNA"
@@ -112,6 +112,7 @@ DimPlot(immune.combined, label = TRUE)
 The `DotPlot` function with the `split.by` parameter can be useful for viewing conserved cell type markers across conditions, showing both the expression level and the percentage of cells in a cluster expressing any given gene. Here we plot 2-3 strong marker genes for each of our 13 clusters.
 
 # TODO: talk about this, explain it well
+# TODO: fix formatting, it's a bit ugly on my machine
 ```{r}
 Idents(immune.combined) <- factor(Idents(immune.combined), levels = c("Mono/Mk Doublets", "pDC", 
     "Eryth", "Mk", "DC", "CD14 Mono", "CD16 Mono", "B Activated", "B", "CD8 T", "NK", "T activated", 
@@ -148,7 +149,7 @@ plot_grid(p1, p2)
 
 As you can see, many of the same genes are upregulated in both of these cell types and likely represent a conserved interferon response pathway.
 
-Because we are confident in having identified common cell types across condition, we can ask what genes change in different conditions for cells of the same type. First, we create a column in the meta.data slot to hold both the cell type and stimulation information and switch the current ident to that column. Then we use FindMarkers to find the genes that are different between stimulated and control B cells. Notice that many of the top genes that show up here are the same as the ones we plotted earlier as core interferon response genes. Additionally, genes like CXCL10 which we saw were specific to monocyte and B cell interferon response show up as highly significant in this list as well.
+Because we are confident in having identified common cell types across condition, we can ask what genes change in different conditions for cells of the same type. First, we create a column in the meta.data slot to hold both the cell type and stimulation information and switch the current ident to that column. Then we use `FindMarkers` to find the genes that are different between stimulated and control B cells. Notice that many of the top genes that show up here are the same as the ones we plotted earlier as core interferon response genes. Additionally, genes like CXCL10 which we saw were specific to monocyte and B cell interferon response show up as highly significant in this list as well.
 
 ```{r}
 immune.combined$celltype.stim <- paste(Idents(immune.combined), immune.combined$stim, sep = "_")
@@ -166,6 +167,7 @@ FeaturePlot(immune.combined, features = c("CD3D", "GNLY", "IFI6"), split.by = "s
 ```
 
 # TODO: discuss this (new v3 feature?)
+# TODO: plotTWIST, remove shyamalan bug (why is this plot not generating properly?)
 ```{r}
 plots <- VlnPlot(immune.combined, features = c("LYZ", "ISG15", "CXCL10"), split.by = "stim", group.by = "celltype", 
     pt.size = 0, combine = FALSE)
