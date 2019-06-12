@@ -26,9 +26,74 @@ We first read in the two count matrices and set up the Seurat objects.
 ```{r}
 library(Seurat)
 library(cowplot)
-ctrl.data <- read.table(file = "./data/immune_control_expression_matrix.txt.gz", sep = "\t")
-stim.data <- read.table(file = "./data/immune_stimulated_expression_matrix.txt.gz", sep = "\t")
+# for sampling data, not needed for workshop
+library(dplyr)
+library(data.table)
 
+ctrl.data.og <- read.table(file = "./data/immune_control_expression_matrix.txt.gz", sep = "\t")
+stim.data.og <- read.table(file = "./data/immune_stimulated_expression_matrix.txt.gz", sep = "\t")
+```
+
+```{r}
+# transpose original df
+t.ctrl.data.og <- transpose(ctrl.data.og)
+t.stim.data.og <- transpose(stim.data.og)
+
+# get row and colnames in order
+# ctrl
+colnames(t.ctrl.data.og) <- rownames(ctrl.data.og)
+rownames(t.ctrl.data.og) <- colnames(ctrl.data.og)
+# stim
+colnames(t.stim.data.og) <- rownames(stim.data.og)
+rownames(t.stim.data.og) <- colnames(stim.data.og)
+
+head(t.stim.data.og)
+head(t.ctrl.data.og)
+
+# create rowname col
+t.ctrl.data.og$rownames <- rownames(t.ctrl.data.og)
+t.stim.data.og$rownames <- rownames(t.stim.data.og)
+
+head(t.ctrl.data.og)
+head(t.stim.data.og)
+```
+
+```{r}
+# take random subset of rows (formerly columns) and test vignette (30% of cells from OG data):
+set.seed(666)
+t.ctrl.data <- sample_n(t.ctrl.data.og, 3906)
+t.stim.data <- sample_n(t.stim.data.og, 3862)
+
+# reassign rownames
+rownames(t.ctrl.data) <- t.ctrl.data$rownames
+rownames(t.stim.data) <- t.stim.data$rownames
+
+# remove name col
+t.ctrl.data$rownames <- NULL
+t.stim.data$rownames <- NULL
+head(t.stim.data)
+head(t.ctrl.data)
+
+# transpose data back to Seurat's expected format
+ctrl.data <- transpose(t.ctrl.data)
+stim.data <- transpose(t.stim.data)
+
+# sort out col/row names for subset data
+colnames(ctrl.data) <- rownames(t.ctrl.data)
+rownames(ctrl.data) <- colnames(t.ctrl.data)
+
+colnames(stim.data) <- rownames(t.stim.data)
+rownames(stim.data) <- colnames(t.stim.data)
+
+# check it worked ok
+head(ctrl.data)
+head(stim.data)
+
+# remove unecessary dfs from memory
+rm(ctrl.data.og, stim.data.og, t.ctrl.data, t.stim.data, t.ctrl.data.og, t.stim.data.og)
+```
+
+```{r}
 # Set up control object
 ctrl <- CreateSeuratObject(counts = ctrl.data, project = "IMMUNE_CTRL", min.cells = 5)
 ctrl$stim <- "CTRL"
