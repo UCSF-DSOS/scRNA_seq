@@ -28,8 +28,8 @@ library(Seurat)
 library(cowplot)
 
 # not quite yet ready, doesn't work!
-ctrl.data <- read.table(file = "./data/subset_ctrl_exp_mat.txt.zip", sep = "\t")
-stim.data <- read.table(file = "./data/subset_stim_exp_mat.txt.zip", sep = "\t")
+ctrl.data <- read.table(file = "./data/subset_ctrl_exp_mat.txt", sep = "\t")
+stim.data <- read.table(file = "./data/subset_stim_exp_mat.txt", sep = "\t")
 ```
 
 ```{r}

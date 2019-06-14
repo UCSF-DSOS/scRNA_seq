@@ -18,6 +18,8 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor 
 For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:
 ```{r}
 pbmc <- NormalizeData(pbmc)
+# what else can I do with tis function?
+?NormalizeData
 ```
 
 ### Identification of highly variable features (feature selection):
@@ -34,17 +36,20 @@ top10 <- head(VariableFeatures(pbmc), 10)
 # plot variable features with and without labels
 plot1 <- VariableFeaturePlot(pbmc)
 plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
-CombinePlots(plots = list(plot1, plot2))
+#CombinePlots(plots = list(plot1, plot2))
+# Note that you can combine plots, but for clarity let's look at each one on their own:
+plot1
+plot2
 ```
 
 ### Scaling the data:
 
 Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The ScaleData function:
 
-Shifts the expression of each gene, so that the mean expression across cells is 0
-Scales the expression of each gene, so that the variance across cells is 1
-This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
-The results of this are stored in pbmc[["RNA"]]@scale.data
+  - Shifts the expression of each gene, so that the mean expression across cells is 0
+  - Scales the expression of each gene, so that the variance across cells is 1
+  - This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
+  - The results of this are stored in pbmc[["RNA"]]@scale.data
 ```{r}
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features = all.genes)
@@ -61,9 +66,10 @@ Scaling is an essential step in the Seurat workflow, but only on genes that will
 ```
 Your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with DoHeatmap) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
 
-### TODO: figure out if this is somehting to expand, leave in and explain, or remove entirely:
+~~~~~~~
+# TODO - what's this following section on about? Do we keep it in?
 
-In Seurat v2 we could also use the ScaleData function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. These features are still supported in ScaleData in Seurat v3, but keep in mind that it is essentially deprecated:
+In Seurat v2 we could also use the ScaleData() function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. These features are still supported in ScaleData in Seurat v3, but keep in mind that it is essentially deprecated:
 
 ```{r}
 pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt")
@@ -71,3 +77,4 @@ pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt")
 
 The Seurat developers strongly recommend the use of the new normalization workflow, sctransform (particularly for advanced users). The method is described in their recent preprint, with a separate vignette using Seurat v3 here. As with ScaleData, the function SCTransform also includes a vars.to.regress parameter.
 ### TODO: end of questionable section, see prev TODO
+~~~~~~~
