@@ -7,7 +7,8 @@ output: html_document
 
 
 ```{r setup, include=FALSE}
+install.packages('knitr') #can comment this line out if knitr is already installed
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-use install_load fucntion to install necessary pacakges
+use install_load function to install necessary packages
