@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Standard pre-processing workflow
 
-The steps below encompass the standard pre-processing workflow for scRNA-seq data in Seurat. These represent the selection and filtration of cells based on QC metrics, data normalization and scaling, and the detection of highly variable features.
+The steps below encompass the standard pre-processing workflow for scRNA-seq data in Seurat. These represent the selection and filtration of cells based on QC metrics, data normalization and scaling, and the detection of highly variable features (often features = genes for ScRNAseq).
 
 Seurat allows you to easily explore QC metrics and filter cells based on any user-defined criteria. A few QC metrics commonly used by the community include:
 
@@ -25,12 +25,12 @@ Seurat allows you to easily explore QC metrics and filter cells based on any use
   - We use the set of all genes starting with MT- as a set of mitochondrial genes:
 ```{r}
 # The [[ operator can add columns to object metadata. This is a great place to stash QC stats
-pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
+pbmc[["percent.mt"]] <- PercentageFeatureSet(object = pbmc, pattern = "^MT-")
 ```
 
 Where are QC metrics stored in Seurat?
 
-The number of unique genes and total molecules are automatically calculated during `CreateSeuratObject()` You can find these metrics stored in the object "metadata:"
+The number of unique genes (Features) and total molecules (Counts) are automatically calculated during `CreateSeuratObject()` You can find these metrics stored in the object "metadata:"
 ```{r}
 # Show QC metrics for the first 5 cells
 head(pbmc@meta.data, 5)
