@@ -18,7 +18,7 @@ On Linux or macOS:
 
 On Windows:
 
-`python -m pip install -U pip`
+`python -m pip install -U pip --user`
 
 ## Install umap-learn
 
