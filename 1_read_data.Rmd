@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-For this tutorial, we will be analyzing the a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 10X Genomics. There are 2,700 single cells that were sequenced on the Illumina NextSeq 500. The raw data can be found here.
+For this tutorial, we will be analyzing a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 10X Genomics. There are 2,700 single cells that were sequenced on the Illumina NextSeq 500. The raw data (as well as other example datasets) can be found here: https://s3-us-west-2.amazonaws.com/10x.files/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz.
 
 We start by reading in the data. The Read10X function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column).
 
@@ -33,22 +33,22 @@ Now that the data is loaded into R, what does this data in a count matrix look l
 # Lets examine a few genes in the first thirty cells
 pbmc.data[c("CD3D", "TCL1A", "MS4A1"), 1:30]
 ```
-The `.` values in the matrix represent 0s (no molecules detected). Since most values in an scRNA-seq matrix are 0, Seurat uses a sparse-matrix representation whenever possible. This results in significant memory and speed savings for Drop-seq/inDrop/10x data.
+The `.` values in the matrix represent 0s (no molecules detected). Since most values in an scRNA-seq matrix are 0, Seurat uses a sparse-matrix representation whenever possible. This results in significant memory and speed savings for Drop-seq/inDrop/10x data. This is especially important was datasets venture into millions of cells.
 
 Let's take a quick look at what this means in practical terms:
 ```{r}
 dense.size <- object.size(as.matrix(pbmc.data))
 dense.size
 ```
-710 million bytes = 710 megabytes
+~710 million bytes = 710 megabytes
 
 ```{r}
 sparse.size <- object.size(pbmc.data)
 sparse.size
 ```
-30 million bytes = 30 megabytes
+~30 million bytes = 30 megabytes
 
 ```{r}
 dense.size/sparse.size
 ```
-The dense matrix is about 24 times larger than the sparse matrix format - thanks Seurat!
+The dense matrix is about 24 times larger than the sparse matrix format - thanks Seurat! This will become more relevant as we conduct complex analysis and our Seurat object (built off of the sparse matrix) has complex, high memory calculations added to it.
