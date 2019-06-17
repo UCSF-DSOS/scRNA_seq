@@ -18,7 +18,7 @@ pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor 
 For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:
 ```{r}
 pbmc <- NormalizeData(pbmc)
-# what else can I do with tis function?
+# what else can I do with this function?
 ?NormalizeData
 ```
 
@@ -40,6 +40,7 @@ plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
 # Note that you can combine plots, but for clarity let's look at each one on their own:
 plot1
 plot2
+#You can ignore the error message 'Transformation introduced infinite values in continuous x-axis'
 ```
 
 ### Scaling the data:
@@ -66,15 +67,13 @@ Scaling is an essential step in the Seurat workflow, but only on genes that will
 ```
 Your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with DoHeatmap) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
 
-~~~~~~~
-# TODO - what's this following section on about? Do we keep it in?
+### Confounding variation regression:
 
-In Seurat v2 we could also use the ScaleData() function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, or mitochondrial contamination. These features are still supported in ScaleData in Seurat v3, but keep in mind that it is essentially deprecated:
+In Seurat v2 we could also use the ScaleData() function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, mitochondrial contamination, or Integrating two 10X libraries run on different chips/different days. These features are still supported in ScaleData in Seurat v3, but keep in mind that it is essentially deprecated and likely will not be a part of future Seurat releases. An example of using the new regression is below.
 
 ```{r}
-pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt")
+# pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt") #old depreciated method; do not use
+pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = FALSE)
 ```
 
-The Seurat developers strongly recommend the use of the new normalization workflow, sctransform (particularly for advanced users). The method is described in their recent preprint, with a separate vignette using Seurat v3 here. As with ScaleData, the function SCTransform also includes a vars.to.regress parameter.
-### TODO: end of questionable section, see prev TODO
-~~~~~~~
+The Seurat developers strongly recommend the use of the new normalization workflow, SCTransform. The method is described in their recent preprint, with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
