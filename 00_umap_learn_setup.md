@@ -23,3 +23,6 @@ On Windows:
 ## Install umap-learn
 
 `$ pip install umap-learn --user`
+
+## TODO
+Will using --user allow RStudio to find the umap package? Currently not working on windows.
