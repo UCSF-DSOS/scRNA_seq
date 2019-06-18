@@ -73,7 +73,7 @@ str(VariableFeatures(pbmc))
 #commented out so this code does not run, see reason below this cell
 #pbmc <- ScaleData(pbmc, features = VariableFeatures(pbmc))
 ```
-Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. By default, ScaleData will perform scaling on all genes. However, it is possible to perfrom scaling on only the 2000 variable genes, the genes necessary to generate your PCA and clustering results in the next workbook.
+Scaling is an essential step in the Seurat workflow, but is only truly necessary for genes that will be used as input to PCA, the 2000 `VariableFeatures` we previously calculated. By default, ScaleData will perform scaling on all genes. However, it is possible to perfrom scaling on only the 2000 variable genes, the genes necessary to generate your PCA and clustering results in the next workbook.
 
 If you do select to only scale the 2000 variable genes, your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with DoHeatmap) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
 
