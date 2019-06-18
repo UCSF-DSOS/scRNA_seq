@@ -4,11 +4,35 @@ author: "Angelo Pelonero"
 date: "6/3/2019"
 output: html_document
 ---
+#####Install and load knitr (for R notebook users)
 
+Notes:  
+
+* If asked to restart R, say No.
+* You can ignore the message "Error in install.packages : Updating loaded packages". This just means you already have it installed/loaded. 
 
 ```{r setup, include=FALSE}
 install.packages('knitr') #can comment this line out if knitr is already installed
 knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
 ```
 
-use install_load function to install necessary packages
+Warning: the following may take some time!
+
+Notes:
+
+* If asked "Update all/some/none?", select all [a].  
+* If asked "Do you want to install from sources the package which needs compilation?", select Yes [y]
+* Lazy loading errors can be ignored, as can warnings about the version of R packages were built under.
+* If asked to restart R, I recommend that you do so (unless this gives you errors, then it's OK to say no on the second try).
+
+```{r message=FALSE, results="hide"}
+install.packages("dplyr")
+install.packages("Seurat")
+install.packages("cowplot")
+```
+
+PLEASE INSTALL UMAP!!! Follow the instructions in 00_umap_learn_setup.md as soon as possible - this process may need troubleshooting and we will not have time to sort out problems during the workshop! If you have any questions about or issues with this software please contact us as soon as you're able so that we can get your machine prepared to follow along during the workshop:
+
+Karla Lindquist: karla.linquist@ucsf.edu
+Angelo Pelonero: angelo.pelonero@ucsf.edu
