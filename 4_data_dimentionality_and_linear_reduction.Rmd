@@ -47,7 +47,7 @@ DimHeatmap(pbmc, dims = 1:15, cells = 500, balanced = TRUE)
 
 To overcome the extensive technical noise in any single feature for scRNA-seq data, Seurat clusters cells based on their PCA scores, with each PC essentially representing a ‘metafeature’ that combines information across a correlated feature (gene) set. The top principal components therefore represent a robust compression of the dataset. However, how many componenets should we choose to include? 10? 20? 100?
 
-In Macosko et al, the authors implemented a resampling test inspired by the JackStraw procedure. Here, we will randomly permute a subset of the data (1% by default) and rerun PCA, constructing a ‘null distribution’ of feature scores, and repeat this procedure. We identify ‘significant’ PCs as those who have a strong enrichment of low p-value features.
+In Macosko et al, the authors implemented a resampling test inspired by the JackStraw procedure. Here, we will randomly permute a subset of the data (1% = 100 replicates) and rerun PCA, constructing a ‘null distribution’ of feature scores, and repeat this procedure. We identify ‘significant’ PCs as those who have a strong enrichment of low p-value features.
 
 If we run this in class, we all may want to pause for a quick break:
 ```{r}
@@ -62,14 +62,14 @@ If we run this in class, we all may want to pause for a quick break:
 pbmc <- JackStraw(pbmc, num.replicate = 10)
 pbmc <- ScoreJackStraw(pbmc, dims = 1:20)
 ```
+The JackStrawPlot function provides a visualization tool for comparing the distribution of p-values for each PC with a uniform distribution (dashed line). ‘Significant’ PCs will show a strong enrichment of features with low p-values (solid curve above the dashed line). In this case it appears that there is a sharp drop-off in significance after the first 10-12 PCs. This distinction will not be clear with only 10 replicates (0.1% subset of the data), showing the importance of replicate number. Compare the graphs in the `jackstraw_permutations` folder. 
 
-The JackStrawPlot function provides a visualization tool for comparing the distribution of p-values for each PC with a uniform distribution (dashed line). ‘Significant’ PCs will show a strong enrichment of features with low p-values (solid curve above the dashed line). In this case it appears that there is a sharp drop-off in significance after the first 10-12 PCs.
 ```{r}
 JackStrawPlot(pbmc, dims = 1:15)
 #Examples showing how increasing replicates increased statistical power are on the github
 ```
 
-An alternative heuristic method generates an ‘Elbow plot’: a ranking of principle components based on the percentage of variance explained by each one (ElbowPlot function). In this example, we can observe an ‘elbow’ around PC9-10, suggesting that the majority of true signal is captured in the first 10 PCs.
+Perhaps the most commonly used heuristic method generates an ‘Elbow plot’: a ranking of principle components based on the percentage of variance explained by each one (ElbowPlot function). In this example, we can observe an ‘elbow’ around PC9-10, suggesting that the majority of true signal is captured in the first 10 PCs.
 
 This is a classic visualization method for PCs
 ```{r}
