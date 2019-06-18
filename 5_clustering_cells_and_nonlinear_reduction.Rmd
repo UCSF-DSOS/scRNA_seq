@@ -52,6 +52,7 @@ DimPlot(pbmc, reduction = "umap")
 You can save the object at this point so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or easily shared with collaborators.
 ```{r}
 saveRDS(pbmc, file = "./output/pbmc_tutorial.rds")
+#pbmc = loadRDS("./output/pbmc_tutorial.rds")
 ```
 
 ### Finding differentially expressed features (cluster biomarkers):
