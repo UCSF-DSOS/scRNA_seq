@@ -127,7 +127,9 @@ DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
 
 ```{r}
 saveRDS(pbmc, file = "./output/pbmc3k_final.rds")
+saveRDS(pbmc.markers, file = "./output/find_all_pbmc_markers.rds")
 ```
+You can save almost any object loaded into your environment as a `.rds` file. This is especially usefully for saving the output of `FindAllMarkers()`, which takes quite some time to run!
 
 ### Conclusion
 
