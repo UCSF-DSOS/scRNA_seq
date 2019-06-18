@@ -28,7 +28,7 @@ head(Idents(pbmc), 5)
 ### Run non-linear dimensional reduction (UMAP/tSNE)
 Seurat offers several non-linear dimensional reduction techniques, such as `tSNE` and `UMAP`, to visualize and explore these datasets. The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space. Cells within the graph-based clusters determined above should co-localize on these dimension reduction plots. As input to the `UMAP` and `tSNE`, we STRONGLY suggest using the same PCs as input to the clustering analysis.
 
-Please make sure you have run through document 00_umap_learn_setup.md
+Please make sure you have run through document `00_umap_learn_setup.md`
 This troubleshooting module is available and commented out, but can be used if your systm cannot find UMAP.
 
 ```{r}
@@ -47,7 +47,16 @@ pbmc <- RunUMAP(pbmc, dims = 1:10)
 # note that you can set `label = TRUE` or use the LabelClusters function to help label
 # individual clusters
 DimPlot(pbmc, reduction = "umap")
+?DimPlot()
 ```
+
+Some options to be aware of:
+pt.size = 1                #changes dots
+reduction = "tsne"         #can be used to plot a `tsne` (but you have to compute it!) or `pca` instead of `umap`
+group.by = "orig.ident"    #can be used if you have several combined datasets of different ages/genotypes, etc
+cells.highlight = [vector] #can be used to highlight cells of interest by passing a vector of cell names
+
+### Saving
 
 You can save the object at this point so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or easily shared with collaborators.
 ```{r}
