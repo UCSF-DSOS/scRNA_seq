@@ -69,11 +69,13 @@ Your PCA and clustering results will be unaffected. However, Seurat heatmaps (pr
 
 ### Confounding variation regression:
 
-In Seurat v2 we could also use the ScaleData() function to remove unwanted sources of variation from a single-cell dataset. For example, we could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, mitochondrial contamination, or Integrating two 10X libraries run on different chips/different days. These features are still supported in ScaleData in Seurat v3, but keep in mind that it is essentially deprecated and likely will not be a part of future Seurat releases. An example of using the new regression is below.
+In Seurat v2 we could also use the ScaleData() function to remove unwanted sources of variation from a single-cell dataset. We could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, mitochondrial contamination, or Integrating two 10X libraries run on different chips/different days. These features are still supported in ScaleData in Seurat v3, but keep in mind that it is essentially deprecated and likely will not be a part of future Seurat releases. An example of using the new regression is below.
 
 ```{r}
-# pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt") #old depreciated method; do not use
-pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = FALSE)
+pbmc <- ScaleData(pbmc, vars.to.regress = "percent.mt") #old depreciated method; do not use
+#pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", return.only.var.genes = FALSE, verbose = FALSE)
 ```
+TODO note: troubleshoot this? From a fresh RStudio, the new SCTransform() line was throwing a `iteration limit reached` error. Is anyone else getting this?
+
 
 The Seurat developers strongly recommend the use of the new normalization workflow, SCTransform. The method is described in their recent preprint, with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
