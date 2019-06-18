@@ -51,29 +51,40 @@ Next, we apply a linear transformation (‘scaling’) that is a standard pre-pr
   - Scales the expression of each gene, so that the variance across cells is 1
   - This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
   - The results of this are stored in pbmc[["RNA"]]@scale.data
+
+We can also take care of unwanted sources of variation in this step. Some things to think about regressing include:
+- cell-cell variation in gene expression driven by batch (for example, two 10X runs from different days)
+- cell alignment rate 
+- number of detected molecules
+- mitochondrial gene expression.
+
+Today, we will regress out differences based on mitochondrial gene expression.
 ```{r}
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress = "percent.mt")
 ```
-This can take some time...
+This will take a few minutes. 
 
 What if it's too slow? Can we make it faster?
 
-Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. Therefore, the default in ScaleData is only to perform scaling on the previously identified variable features (2,000 by default). To do this, omit the features argument in the previous function call, i.e.
-
 ```{r}
-#commented out so this code does not run, see reason above this cell
-#pbmc <- ScaleData(pbmc)
+?ScaleData()
+str(VariableFeatures(pbmc))
+#commented out so this code does not run, see reason below this cell
+#pbmc <- ScaleData(pbmc, features = VariableFeatures(pbmc))
 ```
-If you do perfrom scaling on only the 2000 variable genes, your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with DoHeatmap) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
+Scaling is an essential step in the Seurat workflow, but only on genes that will be used as input to PCA. By default, ScaleData will perform scaling on all genes. However, it is possible to perfrom scaling on only the 2000 variable genes, the genes necessary to generate your PCA and clustering results in the next workbook.
+
+If you do select to only scale the 2000 variable genes, your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with DoHeatmap) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
 
 ### Confounding variation regression:
 
-In Seurat v2 we could also use the ScaleData() function to remove unwanted sources of variation from a single-cell dataset. We could ‘regress out’ heterogeneity associated with (for example) cell cycle stage, mitochondrial contamination, or integrating two 10X libraries run on different chips/different days. These features are still supported in ScaleData in Seurat v3, but keep in mind that it is essentially deprecated and likely will not be a part of future Seurat releases. An example of using the new regression is below.
+In our workshop today, and in Seurat v2, the ScaleData() function is used to remove unwanted sources of variation from a single-cell dataset. This functionality is preserved in ScaleData in Seurat v3. However, an alternative and arguably better technique is also present in Seurat v3. An example of using the new regression is below.
 
 ```{r}
+#Commented out; do not run, this code to simply to provide an in-context example
 #pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", return.only.var.genes = FALSE, verbose = FALSE)
 ```
-The Seurat developers strongly recommend the use of the new normalization workflow, SCTransform. The method is described in their recent preprint, with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
+The Seurat developers recommend the use of the new normalization workflow, SCTransform. The method is described in their recent preprint, with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
 
 The `SCTransform` step actually replaces `NormalizeData`, `ScaleData`, and `FindVariableFeatures`.
