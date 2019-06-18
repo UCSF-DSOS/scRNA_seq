@@ -129,4 +129,6 @@ DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
 saveRDS(pbmc, file = "./output/pbmc3k_final.rds")
 ```
 
-### TODO: write up conclusion.
+### Conclusion
+
+In this notebook, we clustered cells into distinct identities based on their differential gene expression. We observed these distinct transcriptional states with `PCA`, `tsne`, and/or `umap`. We also explored the different genes making up these cluster identities by playing with the `FindMarkers()` and `FindAllMarkers()` commands. Finally, we were able to use expression data to give meaningful labels to our known cell types.
