@@ -85,6 +85,7 @@ head(cluster5.markers, n = 5)
 # find markers for every cluster compared to all remaining cells, report only the positive ones
 pbmc.markers <- FindAllMarkers(pbmc, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
 pbmc.markers %>% group_by(cluster) %>% top_n(n = 2, wt = avg_logFC)
+pbmc.markers.0 = pbmc.markers[pbmc.markers$cluster == 0,] #example of subsetting the FindAllMarkers() result for Cluster 0
 ```
 Seurat has several tests for differential expression which can be set with the test.use parameter (see our DE vignette for details). For example, the ROC test returns the ‘classification power’ for any individual marker (ranging from 0 - random, to 1 - perfect).
 
