@@ -28,13 +28,16 @@ head(Idents(pbmc), 5)
 ### Run non-linear dimensional reduction (UMAP/tSNE)
 Seurat offers several non-linear dimensional reduction techniques, such as `tSNE` and `UMAP`, to visualize and explore these datasets. The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space. Cells within the graph-based clusters determined above should co-localize on these dimension reduction plots. As input to the `UMAP` and `tSNE`, we STRONGLY suggest using the same PCs as input to the clustering analysis.
 
-TODO: keep instructions here? Move instructions to 00_umap file?
+Please make sure you have run through document 00_umap_learn_setup.md
+This troubleshooting module is available and commented out, but can be used if your systm cannot find UMAP.
 
-If you haven't installed UMAP, you can do so via the bash shell:
-`$ pip install umap-learn --user`
-or via the R console / conda: 
-`> reticulate::py_install(packages = 'umap-learn')`
-Further instructions for this in the github.
+```{r}
+#library(reticulate)
+#conda_create('r-reticulate')
+#conda_install("r-reticulate", "umap-learn")
+#use_condaenv("r-reticulate")
+#use_python("/path/to/python", required = TRUE) #to get this info, run `$ where python` on a bash prompt.
+```
 
 ```{r}
 pbmc <- RunUMAP(pbmc, dims = 1:10)
