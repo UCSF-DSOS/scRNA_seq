@@ -86,16 +86,17 @@ rownames(ctrl.data) <- colnames(t.ctrl.data)
 colnames(stim.data) <- rownames(t.stim.data)
 rownames(stim.data) <- colnames(t.stim.data)
 
-# check it worked
-head(ctrl.data)
-head(stim.data)
+# get a short dataset to practice saves
+ctrl.sub.head = head(ctrl.data)
+stim.sub.head = head(stim.data)
 
 # remove unecessary dfs from memory
 rm(t.ctrl.data, t.stim.data, t.ctrl.data.og, t.stim.data.og)
 
-# write out subset data - total garbage rn fix output ASAP
-#write.table(ctrl.data, file = "./data/subset_ctrl_exp_mat.txt", quote=FALSE, sep='\t', col.names = NA)
-#write.table(stim.data, file = "./data/subset_stim_exp_mat.txt", quote=FALSE, sep='\t', col.names = NA)
+# write out subset data - practice with head
+write.table(ctrl.sub.head, file = "./data/subset_ctrl_exp_mat_head.txt", quote=FALSE, sep='\t', col.names = TRUE)
+write.table(stim.sub.head, file = "./data/subset_stim_exp_mat_head.txt", quote=FALSE, sep='\t', col.names = TRUE)
+test = read.delim("./data/subset_ctrl_exp_mat_head.txt")
 ```
 
 ```{r}
