@@ -96,8 +96,8 @@ rm(t.ctrl.data, t.stim.data, t.ctrl.data.og, t.stim.data.og)
 # write out subset data - read back in to provide example
 write.table(ctrl.data, file = "./data/subset_ctrl_exp_mat.txt", quote=FALSE, sep='\t', col.names = TRUE)
 write.table(stim.data, file = "./data/subset_stim_exp_mat.txt", quote=FALSE, sep='\t', col.names = TRUE)
-ctrl.head1 = read.delim("./data/subset_ctrl_exp_mat.txt")
-stim.head1 = read.delim("./data/subset_stim_exp_mat.txt")
+ctrl.data = read.delim("./data/subset_ctrl_exp_mat.txt")
+stim.data = read.delim("./data/subset_stim_exp_mat.txt")
 head(ctrl.data)
 head(stim.data)
 ```
