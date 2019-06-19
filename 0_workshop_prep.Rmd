@@ -30,6 +30,7 @@ Notes:
 install.packages("dplyr")
 install.packages("Seurat")
 install.packages("cowplot")
+install.packages("reticulate")
 ```
 
 PLEASE INSTALL UMAP!!! Follow the instructions in 00_umap_learn_setup.md as soon as possible - this process may need troubleshooting and we will not have time to sort out problems during the workshop! If you have any questions about or issues with this software please contact us as soon as you're able so that we can get your machine prepared to follow along during the workshop:
