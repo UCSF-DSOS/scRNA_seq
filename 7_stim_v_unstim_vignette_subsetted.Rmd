@@ -27,9 +27,9 @@ We first read in the two count matrices and set up the Seurat objects.
 library(Seurat)
 library(cowplot)
 
-# not quite yet ready, doesn't work!
-ctrl.data <- read.table(file = "./data/subset_ctrl_exp_mat.txt", sep = "\t")
-stim.data <- read.table(file = "./data/subset_stim_exp_mat.txt", sep = "\t")
+# read in gene by cell count matrix
+ctrl.data = read.delim("./data/subset_ctrl_exp_mat.txt")
+stim.data = read.delim("./data/subset_stim_exp_mat.txt")
 ```
 
 ```{r}
