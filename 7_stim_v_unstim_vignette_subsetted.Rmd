@@ -29,19 +29,22 @@ library(cowplot)
 
 # read in gene by cell count matrix
 ctrl.data = read.delim("./data/subset_ctrl_exp_mat.txt")
+ctrl.data.mtx = as(as.matrix(ctrl.data), "dgCMatrix") #makes a sparse matrix of ctrl.data dataframe to make creating a Seurat object easier
 stim.data = read.delim("./data/subset_stim_exp_mat.txt")
+stim.data.mtx = as(as.matrix(stim.data), "dgCMatrix") 
+rm(ctrl.data,stim.data)
 ```
 
 ```{r}
 # Set up control object
-ctrl <- CreateSeuratObject(counts = ctrl.data, project = "IMMUNE_CTRL", min.cells = 5)
+ctrl <- CreateSeuratObject(counts = ctrl.data.mtx, project = "IMMUNE_CTRL", min.cells = 5)
 ctrl$stim <- "CTRL"
 ctrl <- subset(ctrl, subset = nFeature_RNA > 500)
 ctrl <- NormalizeData(ctrl, verbose = FALSE)
 ctrl <- FindVariableFeatures(ctrl, selection.method = "vst", nfeatures = 2000)
 
 # Set up stimulated object
-stim <- CreateSeuratObject(counts = stim.data, project = "IMMUNE_STIM", min.cells = 5)
+stim <- CreateSeuratObject(counts = stim.data.mtx, project = "IMMUNE_STIM", min.cells = 5)
 stim$stim <- "STIM"
 stim <- subset(stim, subset = nFeature_RNA > 500)
 stim <- NormalizeData(stim, verbose = FALSE)
