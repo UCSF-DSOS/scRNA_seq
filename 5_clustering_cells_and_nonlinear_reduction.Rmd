@@ -95,7 +95,7 @@ cluster1.markers <- FindMarkers(pbmc, ident.1 = 0, logfc.threshold = 0.25, test.
 
 We include several tools for visualizing marker expression. VlnPlot (shows expression probability distributions across clusters), and FeaturePlot (visualizes feature expression on a tSNE or PCA plot) are our most commonly used visualizations. We also suggest exploring RidgePlot, CellScatter, and DotPlot as additional methods to view your dataset.
 ```{r}
-VlnPlot(pbmc, features = c("MS4A1", "CD79A"))
+VlnPlot(pbmc, features = c("NKG7", "CD79A"))
 ```
 
 ```{r}
@@ -111,7 +111,9 @@ DoHeatmap generates an expression heatmap for given cells and features. In this 
 
 ```{r}
 top10 <- pbmc.markers %>% group_by(cluster) %>% top_n(n = 10, wt = avg_logFC)
-DoHeatmap(pbmc, features = top10$gene) + NoLegend()
+HEATMAP <- DoHeatmap(pbmc, features = top10$gene) + NoLegend()
+
+levels(HEATMAP$data$Identity)
 ```
 
 ### Assigning cell type identity to clusters:

@@ -1,39 +1,64 @@
 ---
-title: "Workshop Setup"
 author: "Angelo Pelonero"
 date: "6/3/2019"
-output: html_document
+title: "Single Cell RNA-Seq Analysis with R Bioconductor" 
+output: html_notebook
 ---
+
+<br/>
+
+###In this workshop, our objectives are to:  
+
+1. Be aware of different methods of loading scRNA-seq data into R
+2. Understand the fundamental steps of preprocessing and quality control
+3. Identify principal components that identify variability
+4. Categorize cell types through clustering
+5. Perform non-linear dimension reduction for final evaluation and visualization (e.g. via tSNE and UMAP graphs)
+
+<br/>
+
+#####Load required packages:
+
+Notes: 
+
+* You should already have these packages installed (per setup instructions via email). If you do not, un-comment the `install.packages` line below (but be warned that this may take a while!).   
+* If asked "Do you want to install from sources the package which needs compilation?", select Yes [y].  
+* Lazy loading errors can be ignored, as can warnings about the version of R packages were built under.  
+* If asked to restart R, we recommend that you do so. 
+
+```{r message=FALSE}
+
+## list packages
+pkgs <- c("dplyr","cowplot","reticulate","Seurat","umap") 
+
+## install packages
+install.packages(pkgs, update = TRUE, ask = FALSE)  
+
+## load packages
+for(package in pkgs) {
+  do.call("library", list(package))
+}
+```
+To find package citations, you can use the `citation()` function with package name as the argument, e.g. `citation("Seurat")`.  
+
+<br/>
+
 #####Install and load knitr (for R notebook users)
 
 Notes:  
 
-* If asked to restart R, say No.
-* You can ignore the message "Error in install.packages : Updating loaded packages". This just means you already have it installed/loaded. 
+* You should already have this package installed (per setup instructions via email). If you do not, un-comment the `install.packages` line below.  
+* If asked to restart R, say No.  
+* You can ignore the message "Error in install.packages : Updating loaded packages". This just means you already have it installed/loaded.  
 
-```{r setup, include=FALSE}
-install.packages('knitr') #can comment this line out if knitr is already installed
-knitr::opts_chunk$set(echo = TRUE)
-library(knitr)
+```{r message=FALSE}
+install.packages("knitr")
+suppressPackageStartupMessages({
+  library(knitr)
+})
 ```
 
-Warning: the following may take some time!
+For setup questions before 9am on the workshop day, please contact either:    
 
-Notes:
-
-* If asked "Update all/some/none?", select all [a].  
-* If asked "Do you want to install from sources the package which needs compilation?", select Yes [y]
-* Lazy loading errors can be ignored, as can warnings about the version of R packages were built under.
-* If asked to restart R, I recommend that you do so (unless this gives you errors, then it's OK to say no on the second try).
-
-```{r message=FALSE, results="hide"}
-install.packages("dplyr")
-install.packages("Seurat")
-install.packages("cowplot")
-install.packages("reticulate")
-```
-
-PLEASE INSTALL UMAP!!! Follow the instructions in 00_umap_learn_setup.md as soon as possible - this process may need troubleshooting and we will not have time to sort out problems during the workshop! If you have any questions about or issues with this software please contact us as soon as you're able so that we can get your machine prepared to follow along during the workshop:
-
-Karla Lindquist: karla.linquist@ucsf.edu
 Angelo Pelonero: angelo.pelonero@ucsf.edu
+Karla Lindquist: karla.linquist@ucsf.edu
