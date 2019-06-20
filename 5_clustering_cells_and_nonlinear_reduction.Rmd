@@ -112,7 +112,7 @@ DoHeatmap generates an expression heatmap for given cells and features. In this 
 ```{r}
 top10 <- pbmc.markers %>% group_by(cluster) %>% top_n(n = 10, wt = avg_logFC)
 HEATMAP <- DoHeatmap(pbmc, features = top10$gene) + NoLegend()
-
+HEATMAP
 levels(HEATMAP$data$Identity)
 ```
 
@@ -120,13 +120,32 @@ levels(HEATMAP$data$Identity)
 
 Fortunately in the case of this dataset, we can use canonical markers to easily match the unbiased clustering to known cell types:
 ```{r}
-new.cluster.ids <- c("Naive CD4 T", "Memory CD4 T", "CD14+ Mono", "B", "CD8 T", "FCGR3A+ Mono", 
-    "NK", "DC", "Platelet")
-# throws error, missing a name?
+id.gene.list = c('IL7R', 'CCR7',		#Naive CD4+ T
+                 'IL7R', 'S100A4',	#Memory CD4+
+                 'CD14', 'LYZ',	  	#CD14+ Mono
+                 'MS4A1',	    		  #B
+                 'CD8A',	          #CD8+ T
+                 'FCGR3A', 'MS4A7',	#FCGR3A+ Mono
+                 'GNLY', 'NKG7',		#NK
+                 'FCER1A', 'CST3',	#DC
+                 'PPBP')			      #Platelet
+
+FeaturePlot(pbmc, features = id.gene.list)
+
+new.cluster.ids <- c("Naive CD4 T",  #0
+                     "CD14+ Mono",   #1
+                     "Memory CD4 T", #2
+                     "CD8 T",        #3
+                     "B",            #4
+                     "NK",           #5
+                     "FCGR3A+ Mono", #6
+                     "DC",           #7
+                     "Platelet")     #8
 names(new.cluster.ids) <- levels(pbmc)
 pbmc <- RenameIdents(pbmc, new.cluster.ids)
 DimPlot(pbmc, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
 ```
+
 
 ```{r}
 saveRDS(pbmc, file = "./output/pbmc3k_final.rds")
