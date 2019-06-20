@@ -21,8 +21,8 @@ Compare the datasets to find cell-type specific responses to stimulation
 ### Setting up Seurat objects:
 TODO: Perhaps use this "control" dataset for examples in workbooks 1-5?
 
-We first read in the two count matrices and set up the Seurat objects.
- # TODO add cowplot to prep script 
+We first read in the two count matrices, subset them to shorten runtimes, and set up the Seurat objects:
+
 ```{r}
 library(Seurat)
 library(cowplot)

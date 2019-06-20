@@ -28,11 +28,11 @@ library(Seurat)
 library(cowplot)
 
 # read in gene by cell count matrix
-ctrl.data = read.delim("./data/subset_ctrl_exp_mat.txt")
-ctrl.data.mtx = as(as.matrix(ctrl.data), "dgCMatrix") #makes a sparse matrix of ctrl.data dataframe to make creating a Seurat object easier
-stim.data = read.delim("./data/subset_stim_exp_mat.txt")
-stim.data.mtx = as(as.matrix(stim.data), "dgCMatrix") 
-rm(ctrl.data,stim.data)
+ctrl.data.og <- read.table(file = "./data/immune_control_expression_matrix.txt.gz", sep = "\t")
+ctrl.data.mtx <- as(as.matrix(ctrl.data), "dgCMatrix") #makes a sparse matrix of ctrl.data dataframe to make creating a Seurat object easier
+
+stim.data <- read.delim("./data/subset_stim_exp_mat.txt")
+stim.data.mtx <- as(as.matrix(stim.data), "dgCMatrix") 
 ```
 
 ```{r}
