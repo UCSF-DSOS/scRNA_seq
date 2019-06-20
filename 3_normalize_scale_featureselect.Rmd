@@ -93,8 +93,8 @@ In our workshop today, and in Seurat v2, the ScaleData() function is used to rem
 
 ```{r}
 #Commented out; do not run, this code to simply to provide an in-context example
-#pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = TRUE)
+pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = TRUE)
 ```
 The Seurat developers recommend the use of the new normalization workflow, SCTransform. The method is described in their recent preprint, with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
 
-The `SCTransform` step actually replaces `NormalizeData`, `ScaleData`, and `FindVariableFeatures`.
+The `SCTransform` step actually replaces `NormalizeData`, `ScaleData`, and `FindVariableFeatures`, although we went through them initially to familiarize ourselves with the concepts. In your future workflow, you can follow the workflow of the sctransform vignette.

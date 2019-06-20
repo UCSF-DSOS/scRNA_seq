@@ -51,18 +51,12 @@ In Macosko et al, the authors implemented a resampling test inspired by the Jack
 
 If we run this in class, we all may want to pause for a quick break:
 ```{r}
-# NOTE: This process can take a long time for big datasets, comment out for expediency. More
-# approximate techniques such as those implemented in ElbowPlot() can be used to reduce
-# computation time
+# NOTE: This process can take a long time for big datasets or older processors. More approximate techniques such as those implemented in ElbowPlot() can be used to reduce computation time
 
-#pbmc <- JackStraw(pbmc, num.replicate = 100) 
-#100 is the correct number of permutations to acquire statistical power
-#however, to prevent long coputation times for class, run the following:
-
-pbmc <- JackStraw(pbmc, num.replicate = 10)
+pbmc <- JackStraw(pbmc, num.replicate = 100)
 pbmc <- ScoreJackStraw(pbmc, dims = 1:20)
 ```
-The JackStrawPlot function provides a visualization tool for comparing the distribution of p-values for each PC with a uniform distribution (dashed line). ‘Significant’ PCs will show a strong enrichment of features with low p-values (solid curve above the dashed line). In this case it appears that there is a sharp drop-off in significance after the first 10-12 PCs. This distinction will not be clear with only 10 replicates (0.1% subset of the data), showing the importance of replicate number. Compare the graphs in the `jackstraw_permutations` folder. 
+The JackStrawPlot function provides a visualization tool for comparing the distribution of p-values for each PC with a uniform distribution (dashed line). ‘Significant’ PCs will show a strong enrichment of features with low p-values (solid curve above the dashed line). In this case it appears that there is a sharp drop-off in significance after the first 10-12 PCs. This distinction will not be clear with only 10 replicates (0.1% subset of the data), showing the importance of replicate number. Compare the graphs in the `jackstraw_permutations` folder. Doing the full 100 gives us statistical power.
 
 ```{r}
 JackStrawPlot(pbmc, dims = 1:15)
