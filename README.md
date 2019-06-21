@@ -28,3 +28,9 @@ Improvements and new features will be added on a regular basis, please contact s
 
 For more information, vignettes. and version history, see:
 *https://satijalab.org/seurat/
+
+DEV TODO:
+
+- Add examples to read in multiple data sources
+- Add check for doublets
+- Clarify complicated procedures in .rmD #s 4, 5, 6 if necessary
