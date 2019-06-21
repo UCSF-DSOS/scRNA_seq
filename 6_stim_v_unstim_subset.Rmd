@@ -11,7 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This tutorial walks through an alignment of two groups of PBMCs from Kang et al, 2017. In this experiment, PBMCs were split into a stimulated and control group and the stimulated group was treated with interferon beta. The response to interferon caused cell type specific gene expression changes that makes a joint analysis of all the data difficult, with cells clustering both by stimulation condition and by cell type. Here, we demonstrate our integration strategy, as described in Stuart and Butler et al, 2018, for performing integrated analyses to promote the identification of common cell types and enable comparative analyses. While this example demonstrates the integration of two datasets (conditions), these methods have been extended to multiple datasets. This workflow provides an example of integrating four pancreatic islet datasets.
 
-Integration goals
+Integration goals:
+
 The following tutorial is designed to give you an overview of the kinds of comparative analyses on complex cell types that are possible using the Seurat integration procedure. Here, we address three main goals:
 
 Identify cell types that are present in both datasets
@@ -19,14 +20,14 @@ Obtain cell type markers that are conserved in both control and stimulated cells
 Compare the datasets to find cell-type specific responses to stimulation
 
 ### Setting up Seurat objects:
-TODO: Perhaps use this "control" dataset for examples in workbooks 1-5?
 
-We first read in the two count matrices and set up the Seurat objects. NOTE: Unzip the subset_xxxx_exp_mat.zip archives prior to running. (If pushing to github repo, add these to .gitignore)
+We first read in the two count matrices and set up the Seurat objects.
 ```{r}
 library(Seurat)
 library(cowplot)
 
 # read in gene by cell count matrix
+# NOTE: Unzip the subset_xxxx_exp_mat.zip archives prior to running.
 ctrl.data <- read.table(file = "./data/subset_ctrl_exp_mat.txt", sep = "\t")
 ctrl.data.mtx <- as(as.matrix(ctrl.data), "dgCMatrix") #makes a sparse matrix of ctrl.data dataframe to make creating a Seurat object easier
 
@@ -200,12 +201,9 @@ FeaturePlot(immune.combined, features = c("CD3D", "GNLY", "IFI6"), split.by = "s
     cols = c("grey", "red"))
 ```
 
-# TODO: discuss this (new v3 feature?)
-# TODO: plotTWIST, remove shyamalan bug (why is this plot not generating properly?)
 ```{r}
-plots <- VlnPlot(immune.combined, features = c("LYZ", "ISG15", "CXCL10"), split.by = "stim", group.by = "celltype", 
+VlnPlot(immune.combined, features = c("LYZ", "ISG15", "CXCL10"), split.by = "stim", group.by = "celltype", 
     pt.size = 0, combine = FALSE)
-CombinePlots(plots = plots, ncol = 1)
 ```
 
 

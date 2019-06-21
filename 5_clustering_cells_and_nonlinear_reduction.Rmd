@@ -58,7 +58,7 @@ cells.highlight = [vector] #can be used to highlight cells of interest by passin
 
 ### Saving
 
-You can save the object at this point so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or easily shared with collaborators.
+You can save the object at this point so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or so that it can be easily shared with collaborators.
 ```{r}
 saveRDS(pbmc, file = "./output/pbmc_tutorial.rds")
 #pbmc = loadRDS("./output/pbmc_tutorial.rds")
@@ -93,7 +93,7 @@ Seurat has several tests for differential expression which can be set with the t
 cluster1.markers <- FindMarkers(pbmc, ident.1 = 0, logfc.threshold = 0.25, test.use = "roc", only.pos = TRUE)
 ```
 
-We include several tools for visualizing marker expression. VlnPlot (shows expression probability distributions across clusters), and FeaturePlot (visualizes feature expression on a tSNE or PCA plot) are our most commonly used visualizations. We also suggest exploring RidgePlot, CellScatter, and DotPlot as additional methods to view your dataset.
+Seurat includes several tools for visualizing marker expression. `VlnPlot` (shows expression probability distributions across clusters), and `FeaturePlot` (visualizes feature expression on a tSNE or PCA plot) are our most commonly used visualizations. We also suggest exploring `RidgePlot`, `CellScatter`, and `DotPlot` as additional methods to view your dataset.
 ```{r}
 VlnPlot(pbmc, features = c("NKG7", "CD79A"))
 ```
@@ -107,13 +107,11 @@ VlnPlot(pbmc, features = c("NKG7", "PF4"), slot = "counts", log = TRUE)
 FeaturePlot(pbmc, features = c("MS4A1", "GNLY", "CD3E", "CD14", "FCER1A", "FCGR3A", "LYZ", "PPBP", 
     "CD8A"))
 ```
-DoHeatmap generates an expression heatmap for given cells and features. In this case, we are plotting the top 20 markers (or all markers if less than 20) for each cluster.
+`DoHeatmap` generates an expression heatmap for given cells and features. In this case, we are plotting the top 20 markers (or all markers if less than 20) for each cluster.
 
 ```{r}
 top10 <- pbmc.markers %>% group_by(cluster) %>% top_n(n = 10, wt = avg_logFC)
-HEATMAP <- DoHeatmap(pbmc, features = top10$gene) + NoLegend()
-HEATMAP
-levels(HEATMAP$data$Identity)
+DoHeatmap(pbmc, features = top10$gene) + NoLegend()
 ```
 
 ### Assigning cell type identity to clusters:

@@ -15,7 +15,8 @@ Next we perform Principle Component Analysis (PCA) on the scaled data. By defaul
 ```{r}
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 ```
-Seurat provides several useful ways of visualizing both cells and features that define the PCA, including VizDimReduction, DimPlot, and DimHeatmap
+Seurat provides several useful ways of visualizing both cells and features that define the PCA, including `VizDimReduction`, `DimPlot`, and `DimHeatmap`.
+
 ```{r}
 # Examine and visualize PCA results through text
 print(pbmc[["pca"]], dims = 1:5, nfeatures = 5)
@@ -49,7 +50,7 @@ To overcome the extensive technical noise in any single feature for scRNA-seq da
 
 In Macosko et al, the authors implemented a resampling test inspired by the JackStraw procedure. Here, we will randomly permute a subset of the data (1% = 100 replicates) and rerun PCA, constructing a ‘null distribution’ of feature scores, and repeat this procedure. We identify ‘significant’ PCs as those who have a strong enrichment of low p-value features.
 
-If we run this in class, we all may want to pause for a quick break:
+Let's run this and take a quick break:
 ```{r}
 # NOTE: This process can take a long time for big datasets or older processors. More approximate techniques such as those implemented in ElbowPlot() can be used to reduce computation time
 
@@ -60,7 +61,7 @@ The JackStrawPlot function provides a visualization tool for comparing the distr
 
 ```{r}
 JackStrawPlot(pbmc, dims = 1:15)
-#Examples showing how increasing replicates increased statistical power are on the github
+#Examples showing how increasing replicates increased statistical power are on GitHub and CLE
 ```
 
 Perhaps the most commonly used heuristic method generates an ‘Elbow plot’: a ranking of principle components based on the percentage of variance explained by each one (ElbowPlot function). In this example, we can observe an ‘elbow’ around PC9-10, suggesting that the majority of true signal is captured in the first 10 PCs.

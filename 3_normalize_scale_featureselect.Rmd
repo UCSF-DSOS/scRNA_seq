@@ -89,11 +89,13 @@ saveRDS(pbmc, file = "./output/pbmc_tutorial.rds")
 
 ### Confounding variation regression:
 
-In our workshop today, and in Seurat v2, the ScaleData() function is used to remove unwanted sources of variation from a single-cell dataset. This functionality is preserved in ScaleData in Seurat v3. However, an alternative and arguably better technique is also present in Seurat v3. An example of using the new regression is below.
+In our workshop today, and in Seurat v2, the `ScaleData` function is used to remove unwanted sources of variation from a single-cell dataset. This functionality is preserved in ScaleData in Seurat v3. However, this `ScaleData` function is essentially deprecated and will slowly be abandoned as Seurat is updated.
+
+An alternative (and arguably better technique), `SCTransform`, is also present in Seurat v3. An example of using the new regression is below.
 
 ```{r}
 #Commented out; do not run, this code to simply to provide an in-context example
-pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = TRUE)
+#pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = TRUE)
 ```
 The Seurat developers recommend the use of the new normalization workflow, SCTransform. The method is described in their recent preprint, with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
 
