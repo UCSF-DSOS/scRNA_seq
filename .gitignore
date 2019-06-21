@@ -5,3 +5,5 @@
 .RDataTmp
 *.backup
 *.rds
+data/subset_ctrl_exp_mat.txt
+data/subset_stim_exp_mat.txt
