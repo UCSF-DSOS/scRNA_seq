@@ -33,4 +33,5 @@ DEV TODO:
 
 - Add examples to read in multiple data sources
 - Add check for doublets
-- Clarify complicated procedures in .rmD #s 4, 5, 6 if necessary
+- Clean up cluster identities in .Rmd #6
+- Clarify complicated procedures in .Rmd #s 4, 5, 6 if necessary
