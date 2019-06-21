@@ -21,14 +21,13 @@ Compare the datasets to find cell-type specific responses to stimulation
 ### Setting up Seurat objects:
 TODO: Perhaps use this "control" dataset for examples in workbooks 1-5?
 
-We first read in the two count matrices and set up the Seurat objects.
- # TODO add cowplot to prep script 
+We first read in the two count matrices and set up the Seurat objects. NOTE: Unzip the subset_xxxx_exp_mat.zip archives prior to running. (If pushing to github repo, add these to .gitignore)
 ```{r}
 library(Seurat)
 library(cowplot)
 
 # read in gene by cell count matrix
-ctrl.data.og <- read.table(file = "./data/immune_control_expression_matrix.txt.gz", sep = "\t")
+ctrl.data <- read.table(file = "./data/subset_ctrl_exp_mat.txt", sep = "\t")
 ctrl.data.mtx <- as(as.matrix(ctrl.data), "dgCMatrix") #makes a sparse matrix of ctrl.data dataframe to make creating a Seurat object easier
 
 stim.data <- read.delim("./data/subset_stim_exp_mat.txt")
