@@ -1,0 +1,1 @@
+The command I used (  tar -cvzf subset_ctrl_exp_mat.tar.gz data/subset_ctrl_exp_mat.txt ) ends up wrapping the .txt in a weird data/ parent directory despite my telling it not to. Lame. Makes read.table() crash.

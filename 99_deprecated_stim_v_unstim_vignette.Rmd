@@ -31,8 +31,8 @@ library(dplyr)
 library(data.table)
 
 # this takes some time...
-ctrl.data.og <- read.table(file = "./data/immune_control_expression_matrix.txt.gz", sep = "\t")
-stim.data.og <- read.table(file = "./data/immune_stimulated_expression_matrix.txt.gz", sep = "\t")
+ctrl.data.og <- read.table(file = "./data/original_ctrl_stim_data/immune_control_expression_matrix.txt.gz", sep = "\t")
+stim.data.og <- read.table(file = "./data/original_ctrl_stim_data/immune_stimulated_expression_matrix.txt.gz", sep = "\t")
 ```
 
 ```{r}
