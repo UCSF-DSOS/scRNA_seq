@@ -23,7 +23,7 @@ Notes:
 
 * You should already have these packages installed (per setup instructions via email). If you do not, un-comment the `install.packages` line below (but be warned that this may take a while!).   
 * If asked "Do you want to install from sources the package which needs compilation?", select Yes [y].  
-* Lazy loading errors can be ignored, as can warnings about the version of R packages were built under.  
+* Lazy loading errors can be ignored, as can warnings about the version of R packages were built under. 
 * If asked to restart R, we recommend that you do so. 
 
 ```{r message=FALSE}
