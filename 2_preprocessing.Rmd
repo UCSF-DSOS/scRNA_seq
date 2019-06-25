@@ -52,7 +52,7 @@ plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA"
 CombinePlots(plots = list(plot1, plot2))
 ```
 
-Here we filter cells that have unique feature counts over 2,500 or less than 200 and those that have >5% mitochondrial counts:
+Here we filter cells that have unique feature counts over 2,500 or less than 200 and those that have >5% mitochondrial counts; this will remove cell doublets and low quality cells:
 ```{r}
 pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
 ```
