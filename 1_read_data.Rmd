@@ -16,8 +16,6 @@ We start by reading in the data. The Read10X function reads in the output of the
 
 We next use the count matrix to create a Seurat object. The object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. For a technical discussion of the Seurat object structure, check out our GitHub Wiki. For example, the count matrix is stored in pbmc[["RNA"]]@counts.
 
-### TODO: pbmc doublets (show how to filter OUT)
-
 ```{r}
 library(dplyr)
 library(Seurat)
@@ -53,5 +51,3 @@ sparse.size
 dense.size/sparse.size
 ```
 The dense matrix is about 24 times larger than the sparse matrix format - thanks Seurat! This will become more relevant as we conduct complex analysis and our Seurat object (built off of the sparse matrix) has complex, high memory calculations added to it.
-
-### TODO: examples of reading in other data sources. Rebecca will write
