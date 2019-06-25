@@ -28,10 +28,10 @@ library(cowplot)
 
 # read in gene by cell count matrix
 # NOTE: Unzip the subset_xxxx_exp_mat.zip archives prior to running.
-ctrl.data <- read.table(file = "./data/subset_ctrl_exp_mat.txt", sep = "\t")
+ctrl.data <- read.table(file = "./data/subset_ctrl_exp_mat.txt.gz", sep = "\t")
 ctrl.data.mtx <- as(as.matrix(ctrl.data), "dgCMatrix") #makes a sparse matrix of ctrl.data dataframe to make creating a Seurat object easier
 
-stim.data <- read.delim("./data/subset_stim_exp_mat.txt")
+stim.data <- read.table("./data/subset_stim_exp_mat.txt.gz", sep = "\t")
 stim.data.mtx <- as(as.matrix(stim.data), "dgCMatrix") 
 ```
 

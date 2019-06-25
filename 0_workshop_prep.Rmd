@@ -7,7 +7,7 @@ output: html_notebook
 
 <br/>
 
-###In this workshop, our objectives are to:  
+### In this workshop, our objectives are to:  
 
 1. Be aware of different methods of loading scRNA-seq data into R
 2. Understand the fundamental steps of preprocessing and quality control
@@ -17,7 +17,7 @@ output: html_notebook
 
 <br/>
 
-#####Load required packages:
+##### Install and load required packages:
 
 Notes: 
 
@@ -43,7 +43,7 @@ To find package citations, you can use the `citation()` function with package na
 
 <br/>
 
-#####Install and load knitr (for R notebook users)
+##### Install and load knitr (for R notebook users):  
 
 Notes:  
 
@@ -58,7 +58,11 @@ suppressPackageStartupMessages({
 })
 ```
 
-For setup questions before 9am on the workshop day, please contact either:    
+<br/> 
 
-Angelo Pelonero: angelo.pelonero@ucsf.edu
-Karla Lindquist: karla.linquist@ucsf.edu
+If you have trouble with installations up until the day before the workshop, please email both Angelo and Karla:  
+Angelo Pelonero: angelo.pelonero@ucsf.edu  
+Karla Lindquist: karla.lindquist@ucsf.edu  
+
+We will also be in the classroom half an hour before the workshop begins. However, this time will be for minor troubleshooting issues only. If you have major issues, or if you wait until this time to begin your installations, we cannot guarantee that you will be set up in time to follow along with the workshop.      
+
