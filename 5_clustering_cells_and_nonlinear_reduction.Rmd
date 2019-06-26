@@ -41,11 +41,13 @@ This troubleshooting module is available and commented out, but can be used if y
 
 ```{r}
 pbmc <- RunUMAP(pbmc, dims = 1:10)
+# pbmc <- RunTSNE(pbmc, dims = 1:10)
 ```
 
 ```{r}
 # note that you can set `label = TRUE` or use the LabelClusters function to help label
 # individual clusters
+# if umap is giving you trouble, replace "umap" with "tsne" for this workshop
 DimPlot(pbmc, reduction = "umap")
 ?DimPlot()
 ```
