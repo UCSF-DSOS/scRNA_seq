@@ -36,8 +36,8 @@ head(Idents(pbmc), 5)
 
 Seurat offers several non-linear dimensional reduction techniques, such as `tSNE` and `UMAP`, to visualize and explore these datasets. The goal of these algorithms is to learn the underlying manifold of the data in order to place similar cells together in low-dimensional space. Cells within the graph-based clusters determined above should co-localize on these dimension reduction plots. As input to the `UMAP` and `tSNE`, we STRONGLY suggest using the same PCs as input to the clustering analysis.
 
-Please make sure you have run through document `00_umap_learn_setup.md`
-This troubleshooting module is available and commented out, but can be used if your systm cannot find UMAP. Please flag a TA/Instructor if you need to use this.
+Please make sure you have run through the setup instructions in the github `README.md`: https://github.com/UCSF-DSI/scRNA_seq/blob/master/README.md
+This troubleshooting module is available and commented out, but can be used if your systm cannot find UMAP. Please flag a TA/Instructor before using this.
 
 ```{r}
 #library(reticulate)
