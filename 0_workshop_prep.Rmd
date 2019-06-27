@@ -1,7 +1,7 @@
 ---
+title: "Single Cell RNA-Seq Analysis - setup" 
 authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
 date: "6/26/2019"
-title: "Single Cell RNA-Seq Analysis - setup" 
 output: html_notebook
 ---
 
