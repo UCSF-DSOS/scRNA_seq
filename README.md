@@ -4,7 +4,7 @@ Welcome to the UCSF Data Science Initiative's single-cell RNA-sequencing worksho
 
 - [Guided Clustering with Seurat](https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html)
 
-- [Integrating Stimulated vs. Control PBMC datasets] (https://satijalab.org/seurat/v3.0/immune_alignment.html)
+- [Integrating Stimulated vs. Control PBMC datasets](https://satijalab.org/seurat/v3.0/immune_alignment.html)
 
 We add emphasis to areas of the vignettes we find most important, expand explanations in key areas, and add some of our own data processing and analysis if needed.
 
