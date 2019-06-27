@@ -1,10 +1,8 @@
 ---
 title: "Clustering cells and nonlinear dimensional reduction"
-date: "6/26/2019"
-output:
-  html_document:
-    df_print: paged
 authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
+date: "6/26/2019"
+output: html_notebook
 ---
 
 ```{r setup, include=FALSE}

@@ -1,10 +1,8 @@
 ---
 title: "Data integration - stimulated vs. untimuilated PBMCs (randomly subsetted data)"
+authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
 date: "6/26/2019"
-output:
-  html_document:
-    df_print: paged
-authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero""
+output: html_notebook
 ---
 
 ```{r setup, include=FALSE}
