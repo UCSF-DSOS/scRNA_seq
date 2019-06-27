@@ -1,22 +1,25 @@
 ---
-title: "Data - overview and importing"
-author: "Angelo Pelonero"
-date: "6/3/2019"
-output: html_document
+title: "Data import, Seurat object creation and overview"
+date: "6/26/2019"
+output:
+  html_document:
+    df_print: paged
+authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero""
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-For this tutorial, we will be analyzing a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 10X Genomics. There are 2,700 single cells that were sequenced on the Illumina NextSeq 500. The raw data can be found here: https://s3-us-west-2.amazonaws.com/10x.files/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz
-Other raw data (for your future explorations) are available here: https://support.10xgenomics.com/single-cell-gene-expression/datasets.
+For this tutorial, we will be analyzing a dataset of Peripheral Blood Mononuclear Cells (PBMC) freely available from 10X Genomics. There are 2,700 single cells that were sequenced on the Illumina NextSeq 500. The raw data can be found [here](https://s3-us-west-2.amazonaws.com/10x.files/samples/cell/pbmc3k/pbmc3k_filtered_gene_bc_matrices.tar.gz).
 
-We start by reading in the data. The Read10X function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column).
+Other raw data (for your future explorations) are available [here](https://support.10xgenomics.com/single-cell-gene-expression/datasets).
 
-For more information about the cellranger pipeline, visit: https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger
+We start by reading in the data. The `Read10X()` function reads in the output of the cellranger pipeline from 10X, returning a unique molecular identified (UMI) count matrix. The values in this matrix represent the number of molecules for each feature (i.e. gene; row) that are detected in each cell (column).
 
-We next use the count matrix to create a Seurat object. The object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. For a technical discussion of the Seurat object structure, check out our GitHub Wiki. For example, the count matrix is stored in pbmc[["RNA"]]@counts.
+For more information about the cellranger pipeline, visit the [CellRanger webpage](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger).
+
+We next use the count matrix to create a `Seurat` object. The object serves as a container that contains both data (like the count matrix) and analysis (like PCA, or clustering results) for a single-cell dataset. For a technical discussion of the Seurat object structure, check out their [GitHub Wiki](https://github.com/satijalab/seurat/wiki). For example, the count matrix is stored in pbmc[["RNA"]]@counts.
 
 ```{r}
 library(dplyr)

@@ -1,8 +1,11 @@
 ---
 title: "Data normalization, scaling, and feature selection"
-author: "Angelo Pelonero"
-date: "6/3/2019"
-output: html_document
+date: "6/26/2019"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+authors: Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Normalizing the data:
 
-After removing unwanted cells from the dataset, the next step is to normalize the data. By default, we employ a global-scaling normalization method “LogNormalize” that normalizes the feature expression measurements for each cell by the total expression, multiplies this by a scale factor (10,000 by default), and log-transforms the result. Normalized values are stored in pbmc[["RNA"]]@data.
+After removing unwanted cells from the dataset, the next step is to normalize the data. By default, we employ a global-scaling normalization method “LogNormalize” that normalizes the feature expression measurements for each cell by the total expression, multiplies this by a scale factor (10,000 by default), and log-transforms the result. Normalized values are stored in `pbmc[["RNA"]]@data`.
 ```{r}
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
 ```
@@ -24,9 +27,11 @@ pbmc <- NormalizeData(pbmc)
 
 ### Identification of highly variable features (feature selection):
 
-We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). We and others have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.
+We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). The Seurat developers and [others](https://www.nature.com/articles/nmeth.2645) have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.
 
-Our procedure in Seurat3 is described in detail here, and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the FindVariableFeatures function. By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.
+The Seurat3 procedure is described in detail [here](https://www.biorxiv.org/content/biorxiv/early/2018/11/02/460147.full.pdf), and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the `FindVariableFeatures` function.
+
+By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.
 ```{r}
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
 
@@ -45,14 +50,15 @@ plot2
 
 ### Scaling the data:
 
-Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The ScaleData function:
+Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The `ScaleData` function:
 
   - Shifts the expression of each gene, so that the mean expression across cells is 0
   - Scales the expression of each gene, so that the variance across cells is 1
   - This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
-  - The results of this are stored in pbmc[["RNA"]]@scale.data
+  - The results of this are stored in `pbmc[["RNA"]]@scale.data`
 
 We can also take care of unwanted sources of variation in this step. Some things to think about regressing include:
+
 - cell-cell variation in gene expression driven by batch (for example, two 10X runs from different days)
 - cell alignment rate 
 - number of detected molecules
@@ -68,14 +74,16 @@ This will take a few minutes.
 What if it's too slow? Can we make it faster?
 
 ```{r}
-?ScaleData()
+?ScaleData
 str(VariableFeatures(pbmc))
 #commented out so this code does not run, see reason below this cell
 #pbmc <- ScaleData(pbmc, features = VariableFeatures(pbmc))
 ```
-Scaling is an essential step in the Seurat workflow, but is only truly necessary for genes that will be used as input to PCA, the 2000 `VariableFeatures` we previously calculated. By default, ScaleData will perform scaling on all genes. However, it is possible to perfrom scaling on only the 2000 variable genes, the genes necessary to generate your PCA and clustering results in the next workbook.
+Scaling is an essential step in the Seurat workflow, but is only truly necessary for genes that will be used as input to PCA (the 2000 `VariableFeatures` we previously calculated).
 
-If you do select to only scale the 2000 variable genes, your PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with DoHeatmap) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
+By default, `ScaleData` will perform scaling on all genes. However, it is possible to perfrom scaling on only the 2000 variable genes, the genes necessary to generate your PCA and clustering results in the next workbook.
+
+If we do select to only scale the 2000 variable genes, our PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with `DoHeatmap`) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
 
 ### Saving
 
@@ -99,4 +107,4 @@ An alternative (and arguably better technique), `SCTransform`, is also present i
 ```
 The Seurat developers recommend the use of the new normalization workflow, SCTransform. The method is described in their recent preprint, with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
 
-The `SCTransform` step actually replaces `NormalizeData`, `ScaleData`, and `FindVariableFeatures`, although we went through them initially to familiarize ourselves with the concepts. In your future workflow, you can follow the workflow of the sctransform vignette.
+The `SCTransform` step actually replaces `NormalizeData`, `ScaleData`, and `FindVariableFeatures`, although we went through them initially to familiarize ourselves with the concepts. In your future workflow, you can follow the workflow of the [SCTransform vignette](https://satijalab.org/seurat/v3.0/sctransform_vignette.html).

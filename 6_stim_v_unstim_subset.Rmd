@@ -1,15 +1,17 @@
 ---
-title: "Data integration"
-author: "Angelo Pelonero"
-date: "6/4/2019"
-output: html_document
+title: "Data integration - stimulated vs. untimuilated PBMCs (randomly subsetted data)"
+date: "6/26/2019"
+output:
+  html_document:
+    df_print: paged
+authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero""
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This tutorial walks through an alignment of two groups of PBMCs from Kang et al, 2017. In this experiment, PBMCs were split into a stimulated and control group and the stimulated group was treated with interferon beta. The response to interferon caused cell type specific gene expression changes that makes a joint analysis of all the data difficult, with cells clustering both by stimulation condition and by cell type. Here, we demonstrate our integration strategy, as described in Stuart and Butler et al, 2018, for performing integrated analyses to promote the identification of common cell types and enable comparative analyses. While this example demonstrates the integration of two datasets (conditions), these methods have been extended to multiple datasets. This workflow provides an example of integrating four pancreatic islet datasets.
+This tutorial walks through an alignment of two groups of PBMCs from [Kang et al, 2017](https://www.nature.com/articles/nbt.4042). In this experiment, PBMCs were split into a stimulated and control group and the stimulated group was treated with interferon beta. The response to interferon caused cell type specific gene expression changes that makes a joint analysis of all the data difficult, with cells clustering both by stimulation condition and by cell type. Here, we demonstrate our integration strategy, as described in [Stuart and Butler et al, 2018](https://www.biorxiv.org/content/10.1101/460147v1), for performing integrated analyses to promote the identification of common cell types and enable comparative analyses. While this example demonstrates the integration of two datasets (conditions), these methods have been extended to multiple datasets. This [workflow](http://www.satijalab.org/seurat/v3.0/pancreas_integration_label_transfer.html) provides an example of integrating four pancreatic islet datasets.
 
 Integration goals:
 
@@ -198,7 +200,7 @@ b.interferon.response <- FindMarkers(immune.combined, ident.1 = "B_STIM", ident.
 head(b.interferon.response, n = 15)
 ```
 
-Another useful way to visualize these changes in gene expression is with the `split.by` option to the `FeaturePlot` or `VlnPlot` function. This will display FeaturePlots of the list of given genes, split by a grouping variable (stimulation condition here). Genes such as CD3D and GNLY are canonical cell type markers (for T cells and NK/CD8 T cells) that are virtually unaffected by interferon stimulation and display similar gene expression patterns in the control and stimulated group. IFI6 and ISG15, on the other hand, are core interferon response genes and are upregulated accordingly in all cell types. Finally, CD14 and CXCL10 are genes that show a cell type specific interferon response. CD14 expression decreases after stimulation in CD14 monocytes, which could lead to misclassification in a supervised analysis framework, underscoring the value of integrated analysis. CXCL10 shows a distinct upregulation in monocytes and B cells after interferon stimulation but not in other cell types.
+Another useful way to visualize these changes in gene expression is with the `split.by` option to the `FeaturePlot` or `VlnPlot()` function. This will display FeaturePlots of the list of given genes, split by a grouping variable (stimulation condition here). Genes such as CD3D and GNLY are canonical cell type markers (for T cells and NK/CD8 T cells) that are virtually unaffected by interferon stimulation and display similar gene expression patterns in the control and stimulated group. IFI6 and ISG15, on the other hand, are core interferon response genes and are upregulated accordingly in all cell types. Finally, CD14 and CXCL10 are genes that show a cell type specific interferon response. CD14 expression decreases after stimulation in CD14 monocytes, which could lead to misclassification in a supervised analysis framework, underscoring the value of integrated analysis. CXCL10 shows a distinct upregulation in monocytes and B cells after interferon stimulation but not in other cell types.
 
 ```{r}
 FeaturePlot(immune.combined, features = c("CD3D", "GNLY", "IFI6"), split.by = "stim", max.cutoff = 3, 

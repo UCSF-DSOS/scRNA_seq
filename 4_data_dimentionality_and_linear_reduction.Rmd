@@ -1,8 +1,10 @@
 ---
-title: "Data dimentionality"
-author: "Angelo Pelonero"
-date: "6/3/2019"
-output: html_document
+title: "Data dimentionality and linear dimensional reduction"
+date: "6/26/2019"
+output:
+  html_document:
+    df_print: paged
+authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Linear dimentional reduction:
 
-Next we perform Principle Component Analysis (PCA) on the scaled data. By default, only the previously determined variable features are used as input, but can be defined using features argument if you wish to choose a different subset.
+Next we perform Principle Component Analysis (PCA) on the scaled data. By default, only the previously determined variable features are used as input, but can be defined using `features` argument if you wish to choose a different subset.
 ```{r}
 pbmc <- RunPCA(pbmc, features = VariableFeatures(object = pbmc))
 ```
@@ -32,7 +34,9 @@ VizDimLoadings(pbmc, dims = 1:4, reduction = "pca")
 DimPlot(pbmc, reduction = "pca")
 ```
 
-In particular DimHeatmap allows for easy exploration of the primary sources of heterogeneity in a dataset, and can be useful when trying to decide which PCs to include for further downstream analyses. Both cells and features are ordered according to their PCA scores. Setting cells to a number plots the ‘extreme’ cells on both ends of the spectrum, which dramatically speeds plotting for large datasets. Though clearly a supervised analysis, we find this to be a valuable tool for exploring correlated feature sets:
+In particular `DimHeatmap` allows for easy exploration of the primary sources of heterogeneity in a dataset, and can be useful when trying to decide which PCs to include for further downstream analyses.
+
+Both cells and features are ordered according to their PCA scores. Setting `cells` to a number plots the ‘extreme’ cells on both ends of the spectrum, which dramatically speeds plotting for large datasets. Though clearly a supervised analysis, we find this to be a valuable tool for exploring correlated feature sets.
 ```{r}
 #Plot a heatmap of the top 7 genes making up PC1
 DimHeatmap(pbmc, dims = 1, cells = 500, balanced = TRUE)
@@ -48,25 +52,23 @@ DimHeatmap(pbmc, dims = 1:15, cells = 500, balanced = TRUE)
 
 To overcome the extensive technical noise in any single feature for scRNA-seq data, Seurat clusters cells based on their PCA scores, with each PC essentially representing a ‘metafeature’ that combines information across a correlated feature (gene) set. The top principal components therefore represent a robust compression of the dataset. However, how many componenets should we choose to include? 10? 20? 100?
 
-In Macosko et al, the authors implemented a resampling test inspired by the JackStraw procedure. Here, we will randomly permute a subset of the data (1% = 100 replicates) and rerun PCA, constructing a ‘null distribution’ of feature scores, and repeat this procedure. We identify ‘significant’ PCs as those who have a strong enrichment of low p-value features.
+In [Macosko et al](https://www.cell.com/abstract/S0092-8674(15)00549-8), the authors implemented a resampling test inspired by the JackStraw procedure. Here, we will randomly permute a subset of the data (1% = 100 replicates) and rerun PCA, constructing a ‘null distribution’ of feature scores, and repeat this procedure. We identify ‘significant’ PCs as those who have a strong enrichment of low p-value features.
 
 Let's run this and take a quick break:
 ```{r}
-# NOTE: This process can take a long time for big datasets or older processors. More approximate techniques such as those implemented in ElbowPlot() can be used to reduce computation time
+# NOTE: This process can take a long time for big datasets or older processors. More approximate techniques such as those implemented in ElbowPlot can be used to reduce computation time
 
 pbmc <- JackStraw(pbmc, num.replicate = 100)
 pbmc <- ScoreJackStraw(pbmc, dims = 1:20)
 ```
-The JackStrawPlot function provides a visualization tool for comparing the distribution of p-values for each PC with a uniform distribution (dashed line). ‘Significant’ PCs will show a strong enrichment of features with low p-values (solid curve above the dashed line). In this case it appears that there is a sharp drop-off in significance after the first 10-12 PCs. This distinction will not be clear with only 10 replicates (0.1% subset of the data), showing the importance of replicate number. Compare the graphs in the `jackstraw_permutations` folder. Doing the full 100 gives us statistical power.
+The `JackStrawPlot` function provides a visualization tool for comparing the distribution of p-values for each PC with a uniform distribution (dashed line). ‘Significant’ PCs will show a strong enrichment of features with low p-values (solid curve above the dashed line). In this case it appears that there is a sharp drop-off in significance after the first 10-12 PCs. This distinction will not be clear with only 10 replicates (0.1% subset of the data), showing the importance of replicate number. Compare the graphs in the `jackstraw_permutations` folder. Doing the full 100 gives us statistical power.
 
 ```{r}
 JackStrawPlot(pbmc, dims = 1:15)
 #Examples showing how increasing replicates increased statistical power are on GitHub and CLE
 ```
 
-Perhaps the most commonly used heuristic method generates an ‘Elbow plot’: a ranking of principle components based on the percentage of variance explained by each one (ElbowPlot function). In this example, we can observe an ‘elbow’ around PC9-10, suggesting that the majority of true signal is captured in the first 10 PCs.
-
-This is a classic visualization method for PCs
+Perhaps the most commonly used heuristic method generates an ‘Elbow plot’: a ranking of principle components based on the percentage of variance explained by each one (`ElbowPlot` function). In this example, we can observe an ‘elbow’ around PC9-10, suggesting that the majority of true signal is captured in the first 10 PCs. This is a classic visualization for PCs.
 ```{r}
 ElbowPlot(pbmc)
 ```

@@ -1,0 +1,1 @@
+This directory contains setup instructions, knit notebooks, and any other relevant infomration for this course. Intended for instructor use - all information found here can also be found in the course content and main repo readme.
