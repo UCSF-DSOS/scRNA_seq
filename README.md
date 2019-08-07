@@ -1,6 +1,6 @@
 # UCSF DSI scRNA seq
 
-Welcome to the UCSF Data Science Initiative's single-cell RNA-sequencing workshop. Content on the "master" branch of this repository is the content used in our most recent workshop while the "dev" branch is subject to frequent change and may contain material not previously covered by our instructors in-class. This course is built from the following Satija Lab Seurat vignettes:
+Welcome to the UCSF Data Science Initiative's single-cell RNA-sequencing workshop. This course is built from the following Satija Lab Seurat vignettes:
 
 - [Guided Clustering with Seurat](https://satijalab.org/seurat/v3.0/pbmc3k_tutorial.html)
 
@@ -8,7 +8,13 @@ Welcome to the UCSF Data Science Initiative's single-cell RNA-sequencing worksho
 
 We add emphasis to areas of the vignettes we find most important, expand explanations in key areas, and add some of our own data processing and analysis if needed.
 
-To prepare your machine for this class, clone this repository and follow the setup instructions below! You may also download the .Rmd files, data, and figures from the UCSF CLE workshop page as an alternative to cloning this repo.
+### Official UCSF DSI Course Materials
+
+Team-reviewed, tested, and ready-to-use materials will always be hosted on our official UCSF Collaborative Learning Environment (CLE) [scRNA-seq webpage](https://courses.ucsf.edu/course/view.php?id=6154).
+
+_This GitHub repository is for development purposes and therefore may stray from the materials used in class._ CLE will remain as it was at the time of our most recently offered workshop and will only be updated if major changes are introduced to the course.
+
+Branch "master" should function as intended if cloned, but for verified materials please download all documents and data from CLE unless otherwise instructed.
 
 # Workshop Setup Instructions:
 
@@ -121,3 +127,9 @@ __Please note that this pipeline is not necessary for this workshop__ but will b
 Seurat is an R toolkit for single cell genomics, developed and maintained by the Satija Lab at NYGC. Instructions, documentation, version history, and additional tutorials can be found on the [Satija Lab Webpage](https://satijalab.org/seurat). Seurat is also hosted on the Satija Lab GitHub, you can view and clone the repository [here](https://github.com/satijalab/seurat).
 
 Seurat has been successfully installed on Mac OS X, Linux, and Windows, using the devtools package to install directly from GitHub. Improvements and new features will be added to the Satija Lab GitHub on a regular basis, please contact seuratpackage@gmail.com with any questions or if you would like to contribute.
+
+# GitHub and UCSF data security protocols:
+
+Please be aware that **GitHub is not certified for use with personal health information (PHI).** Do not store or share any sensitive information via GitHub, even if kept in private repositories.
+
+For more information regarding UCSF's security guidelines, [please see the UCSF IRB guidelines for electronic data security.](https://irb.ucsf.edu/electronic-data-security)
