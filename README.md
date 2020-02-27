@@ -108,6 +108,8 @@ Open `0_workshop_prep.Rmd` in Rstudio, run all the cells, and ensure all package
 
 [https://github.com/satijalab/seurat/issues/1020](https://github.com/satijalab/seurat/issues/1020)
 
+### Update readme with new setup instructions (no reticulate)
+
 [https://stackoverflow.com/questions/55975266/reticulate-cant-install-python-packages](ttps://stackoverflow.com/questions/55975266/reticulate-cant-install-python-packages)
 
 [https://rstudio.github.io/reticulate/articles/python_packages.html](https://rstudio.github.io/reticulate/articles/python_packages.html)

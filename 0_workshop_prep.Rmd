@@ -29,7 +29,7 @@ Notes:
 ```{r message=FALSE}
 
 ## list packages
-pkgs <- c("dplyr","cowplot","reticulate","Seurat","umap") 
+pkgs <- c("dplyr","cowplot","Seurat","umap") 
 
 ## install packages
 install.packages(pkgs, update = TRUE, ask = FALSE)  
@@ -52,7 +52,7 @@ Notes:
 * You can ignore the message "Error in install.packages : Updating loaded packages". This just means you already have it installed/loaded.  
 
 ```{r message=FALSE}
-install.packages("knitr")
+#install.packages("knitr")
 suppressPackageStartupMessages({
   library(knitr)
 })
