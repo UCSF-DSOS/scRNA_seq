@@ -1,7 +1,7 @@
 ---
 title: "Clustering cells and nonlinear dimensional reduction"
 authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
-date: "6/26/2019"
+date: "3/2/2020"
 output: html_notebook
 ---
 
@@ -23,8 +23,10 @@ To cluster the cells, Seurat v3 next applies modularity optimization techniques 
 
 The `FindClusters` function implements this procedure, and contains a resolution parameter that sets the ‘granularity’ of the downstream clustering, with increased values leading to a greater number of clusters. We find that setting this parameter between `0.4-1.2` typically returns good results for single-cell datasets of around 3K cells. Optimal resolution often increases for larger datasets. The clusters can be found using the `Idents` function.
 ```{r}
+# TODO: discuss sequence of resolutions (.4-2, plot each, pick favorite), vary dims?
+# TODO: identify and note spots where we need to edit dims to keep consistent - set a dims var
 pbmc <- FindNeighbors(pbmc, dims = 1:10)
-pbmc <- FindClusters(pbmc, resolution = 0.4)
+pbmc <- FindClusters(pbmc, resolution = 0.5)
 ```
 
 ```{r}
