@@ -1,7 +1,7 @@
 ---
 title: "Single Cell RNA-Seq Analysis - setup" 
 authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
-date: "6/26/2019"
+date: "3/2/2020"
 output: html_notebook
 ---
 
@@ -29,7 +29,7 @@ Notes:
 ```{r message=FALSE}
 
 ## list packages
-pkgs <- c("dplyr","cowplot","reticulate","Seurat","umap") 
+pkgs <- c("dplyr","cowplot","Seurat", "lifecycle") 
 
 ## install packages
 install.packages(pkgs, update = TRUE, ask = FALSE)  
@@ -52,7 +52,7 @@ Notes:
 * You can ignore the message "Error in install.packages : Updating loaded packages". This just means you already have it installed/loaded.  
 
 ```{r message=FALSE}
-install.packages("knitr")
+#install.packages("knitr")
 suppressPackageStartupMessages({
   library(knitr)
 })

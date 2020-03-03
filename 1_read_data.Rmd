@@ -1,9 +1,9 @@
 ---
 title: "Data import, Seurat object creation and overview"
 authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
-date: "6/26/2019"
+date: "3/2/2020"
 output: html_notebook
----
+--- 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
