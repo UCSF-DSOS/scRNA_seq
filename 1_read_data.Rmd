@@ -3,7 +3,7 @@ title: "Data import, Seurat object creation and overview"
 authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
 date: "3/2/2020"
 output: html_notebook
----
+--- 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)

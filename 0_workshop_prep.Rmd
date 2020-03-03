@@ -29,7 +29,7 @@ Notes:
 ```{r message=FALSE}
 
 ## list packages
-pkgs <- c("dplyr","cowplot","Seurat") 
+pkgs <- c("dplyr","cowplot","Seurat", "lifecycle") 
 
 ## install packages
 install.packages(pkgs, update = TRUE, ask = FALSE)  

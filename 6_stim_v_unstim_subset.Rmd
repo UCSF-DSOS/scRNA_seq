@@ -25,6 +25,7 @@ We first read in the two count matrices and set up the Seurat objects.
 ```{r}
 library(Seurat)
 library(cowplot)
+library(ggplot2)
 
 # extract archives:
 unzip("./data/subset_ctrl_exp_mat.zip", exdir = "./data/")
