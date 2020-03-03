@@ -1,5 +1,5 @@
 ---
-title: "Data integration - stimulated vs. untimuilated PBMCs (randomly subsetted data)"
+title: "Data integration - stimulated vs. untimuilated PBMCs (randomly subset data)"
 authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
 date: "3/2/2020"
 output: html_notebook
@@ -210,5 +210,3 @@ FeaturePlot(immune.combined, features = c("CD3D", "GNLY", "IFI6"), split.by = "s
 VlnPlot(immune.combined, features = c("LYZ", "ISG15", "CXCL10"), split.by = "stim", group.by = "celltype", 
     pt.size = 0, combine = FALSE)
 ```
-
-
