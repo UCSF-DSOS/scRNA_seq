@@ -203,7 +203,7 @@ Another useful way to visualize these changes in gene expression is with the `sp
 
 ```{r}
 FeaturePlot(immune.combined, features = c("CD3D", "GNLY", "IFI6"), split.by = "stim", max.cutoff = 3, 
-    cols = c("grey", "red"))
+    cols = c("grey", "red"), ncol = 1)
 ```
 
 ```{r}

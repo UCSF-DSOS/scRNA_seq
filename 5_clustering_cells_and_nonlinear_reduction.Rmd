@@ -63,7 +63,7 @@ cells.highlight = [vector] #can be used to highlight cells of interest by passin
 You can save the object at this point so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or so that it can be easily shared with collaborators.
 ```{r}
 saveRDS(pbmc, file = "./output/pbmc_tutorial.rds")
-#pbmc = loadRDS("./output/pbmc_tutorial.rds")
+#pbmc = readRDS("./output/pbmc_tutorial.rds")
 ```
 
 ### Finding differentially expressed features (cluster biomarkers):
@@ -133,12 +133,12 @@ id.gene.list = c('IL7R', 'CCR7',		#Naive CD4+ T
 FeaturePlot(pbmc, features = id.gene.list)
 
 new.cluster.ids <- c("Naive CD4 T",  #0
-                     "CD14+ Mono",   #1
-                     "Memory CD4 T", #2
-                     "CD8 T",        #3
-                     "B",            #4
-                     "NK",           #5
-                     "FCGR3A+ Mono", #6
+                     "Memory CD4 T", #1
+                     "CD14+ Mono",   #2
+                     "B",            #3
+                     "CD8+ T",       #4
+                     "FCGR3A+ Mono", #5
+                     "NK",           #6
                      "DC",           #7
                      "Platelet")     #8
 names(new.cluster.ids) <- levels(pbmc)

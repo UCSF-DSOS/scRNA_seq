@@ -1,8 +1,10 @@
 ---
-title: "Single Cell RNA-Seq Analysis - setup" 
-authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
+title: "Single Cell RNA-Seq Analysis - setup"
 date: "3/2/2020"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
+authors: Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero
 ---
 
 <br/>
@@ -27,6 +29,11 @@ Notes:
 * If asked to restart R, we recommend that you do so. 
 
 ```{r message=FALSE}
+# install BiocManager, multtest (Seurat dependency)
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("multtest")
 
 ## list packages
 pkgs <- c("dplyr","cowplot","Seurat", "lifecycle") 

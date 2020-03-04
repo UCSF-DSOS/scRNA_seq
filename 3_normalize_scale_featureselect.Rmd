@@ -89,7 +89,7 @@ You can save the object at this point so that it can easily be loaded back in wi
 An example of how to load the data back in is also included, although commented out for now.
 ```{r}
 saveRDS(pbmc, file = "./output/pbmc_tutorial.rds")
-#pbmc = loadRDS("./output/pbmc_tutorial.rds")
+#pbmc = readRDS("./output/pbmc_tutorial.rds")
 ```
 
 ### Confounding variation regression:
