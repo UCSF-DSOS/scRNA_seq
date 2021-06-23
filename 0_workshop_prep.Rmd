@@ -1,7 +1,7 @@
 ---
 title: "Single Cell RNA-Seq Analysis - setup" 
-authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
-date: "3/2/2020"
+authors: "Karla Lindquist (with Angelo Pelonero and Rebecca Jaszczak)"
+date: "3/30/2021"
 output: html_notebook
 ---
 
@@ -9,60 +9,67 @@ output: html_notebook
 
 ### In this workshop, our objectives are to:  
 
-1. Be aware of different methods of loading scRNA-seq data into R
+1. Load and inspect scRNA-seq data with R and Seurat 
 2. Understand the fundamental steps of preprocessing and quality control
-3. Identify principal components that identify variability
-4. Categorize cell types through clustering
-5. Perform non-linear dimension reduction for final evaluation and visualization (e.g. via tSNE and UMAP graphs)
+3. Prepare data for analysis by normalizing, scaling and filtering data  
+4. Identify principal components that identify variability and perform non-linear dimension reduction (UMAP and tSNE)
+5. Categorize cell types through clustering and visualize  
 
 <br/>
 
-##### Install and load required packages:
+##### Install required packages
 
-Notes: 
+Instructions and notes:  
 
-* You should already have these packages installed (per setup instructions via email). If you do not, un-comment the `install.packages` line below (but be warned that this may take a while!).   
-* If asked "Do you want to install from sources the package which needs compilation?", select Yes [y].  
-* Lazy loading errors can be ignored, as can warnings about the version of R packages were built under. 
-* If asked to restart R, we recommend that you do so. 
+* Please make sure that you have _current_ versions of R, Bioconductor, and RStudio installed.      
+  + [R](https://cran.r-project.org/)  
+  + [Bioconductor](https://bioconductor.org/install/)  
+  + [RStudio (free desktop version)](https://www.rstudio.com/products/rstudio/download/)  
+* Before attempting to run the code below, please open a new/fresh RStudio session.  
+* If you are still asked to restart RStudio, please do so (at least the first time - if you get asked multiple times, you can say No after doing it once). 
+* If you would like help with installation issues, feel free to email <karla.lindquist@ucsf.edu>.  
+* If you are taking this workshop live, please email me _by 5PM on the day before the workshop_ (I can't guarantee that I can fully help on the same day, so please try to run this code before). Troubleshooting will not be possible _during_ the workshop due to the online format. Thank you for your understanding.      
+
 
 ```{r message=FALSE}
-
 ## list packages
-pkgs <- c("dplyr","cowplot","Seurat", "lifecycle") 
+pkgs <- c("dplyr","cowplot","Seurat", "lifecycle", "knitr", "patchwork", "BiocManager") 
 
-## install packages
-install.packages(pkgs, update = TRUE, ask = FALSE)  
+## install packages from CRAN and Bioconductor
+# install.packages(pkgs, update = TRUE, ask = FALSE)
+# BiocManager::install("limma")
+```
 
+</br> 
+
+* If you are taking this workshop live/online, you will not be running the code chunk above during the workshop. You should already have these packages installed (per setup instructions provided via email and above).  
+
+```{r}
 ## load packages
-for(package in pkgs) {
+for(package in c(pkgs, "limma")) {
   do.call("library", list(package))
 }
 ```
-To find package citations, you can use the `citation()` function with package name as the argument, e.g. `citation("Seurat")`.  
 
-<br/>
+</br>
 
-##### Install and load knitr (for R notebook users):  
+##### Acknowledgments  
 
-Notes:  
+To find package citations, you can use the `citation()` function with package name as the argument.   
 
-* You should already have this package installed (per setup instructions via email). If you do not, un-comment the `install.packages` line below.  
-* If asked to restart R, say No.  
-* You can ignore the message "Error in install.packages : Updating loaded packages". This just means you already have it installed/loaded.  
-
-```{r message=FALSE}
-#install.packages("knitr")
-suppressPackageStartupMessages({
-  library(knitr)
-})
+```{r}
+citation("Seurat")
 ```
+</br> 
 
-<br/> 
 
-If you have trouble with installations up until the day before the workshop, please email both Angelo and Karla:  
-Angelo Pelonero: angelo.pelonero@ucsf.edu  
-Karla Lindquist: karla.lindquist@ucsf.edu  
+The content of this workshop is largely taken from the `Seurat` vignettes, with some additional content contributed by Karla Lindquist, Angelo Pelonero, and Rebecca Jaszczak. We do not claim that this is original material. Some funding for our efforts was provided by the Committee on Library & Scholarly Communication at UCSF.  
 
-We will also be in the classroom half an hour before the workshop begins. However, this time will be for minor troubleshooting issues only. If you have major issues, or if you wait until this time to begin your installations, we cannot guarantee that you will be set up in time to follow along with the workshop.      
+The purpose of joining the workshop live is to be able to discuss results together. Whether you are joining the workshop or working through these materials on your own, feel free to email <karla.lindquist@ucsf.edu> if you have any questions.  
+
+</br>
+
+##### Thank you and enjoy!  
+
+
 

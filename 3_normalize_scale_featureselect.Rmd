@@ -1,35 +1,43 @@
 ---
 title: "Data normalization, scaling, and feature selection"
-authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
-date: "3/2/2020"
+authors: "Karla Lindquist (with Angelo Pelonero and Rebecca Jaszczak)"
+date: "3/30/2021"
 output: html_notebook
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+</br>
 
-### Normalizing the data:
+#### Normalizing the data
 
 After removing unwanted cells from the dataset, the next step is to normalize the data. By default, we employ a global-scaling normalization method “LogNormalize” that normalizes the feature expression measurements for each cell by the total expression, multiplies this by a scale factor (10,000 by default), and log-transforms the result. Normalized values are stored in `pbmc[["RNA"]]@data`.
 ```{r}
 pbmc <- NormalizeData(pbmc, normalization.method = "LogNormalize", scale.factor = 10000)
 ```
-For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. However, this isn’t required and the same behavior can be achieved with:
+
+What does this look like? We can compare those 3 genes that we looked at earlier in the raw data for the first 30 cells (but we'll focus on the first 10 this time):    
+
 ```{r}
-pbmc <- NormalizeData(pbmc)
-# what else can I do with this function?
+pbmc.data[c("CD3D", "TCL1A", "MS4A1"), 1:10]
+pbmc[["RNA"]]@data[c("CD3D", "TCL1A", "MS4A1"), 1:10]
+```
+
+Note: For clarity, in this previous line of code (and in future commands), we provide the default values for certain parameters in the function call. Look at the help file for the function to find out what the default values are and what they mean. For example, the "LogNormalize" argument means that feature "counts for each cell are divided by the total counts for that cell and multiplied by the scale.factor. This is then natural-log transformed using log1p.". You can try different methods.  
+```{r}
 ?NormalizeData
 ```
 
-### Identification of highly variable features (feature selection):
+
+</br>
+
+#### Identification of highly variable genes (feature selection)
 
 We next calculate a subset of features that exhibit high cell-to-cell variation in the dataset (i.e, they are highly expressed in some cells, and lowly expressed in others). The Seurat developers and [others](https://www.nature.com/articles/nmeth.2645) have found that focusing on these genes in downstream analysis helps to highlight biological signal in single-cell datasets.
 
 The Seurat3 procedure is described in detail [here](https://www.biorxiv.org/content/biorxiv/early/2018/11/02/460147.full.pdf), and improves on previous versions by directly modeling the mean-variance relationship inherent in single-cell data, and is implemented in the `FindVariableFeatures` function.
 
-By default, we return 2,000 features per dataset. These will be used in downstream analysis, like PCA.
+By default, we return 2,000 features per dataset and we use the "vst" method which fits a local polynomial regression line (see ?FindVariableFeatures for other methods). These will be used in downstream analysis, like PCA.  
 ```{r}
+?FindVariableFeatures
 pbmc <- FindVariableFeatures(pbmc, selection.method = "vst", nfeatures = 2000)
 
 # Identify the 10 most highly variable genes
@@ -38,70 +46,78 @@ top10 <- head(VariableFeatures(pbmc), 10)
 # plot variable features with and without labels
 plot1 <- VariableFeaturePlot(pbmc)
 plot2 <- LabelPoints(plot = plot1, points = top10, repel = TRUE)
-#CombinePlots(plots = list(plot1, plot2))
 # Note that you can combine plots, but for clarity let's look at each one on their own:
+# plot1 | plot2
 plot1
 plot2
 #You can ignore the error message 'Transformation introduced infinite values in continuous x-axis'
 ```
+</br>  
 
-### Scaling the data:
+#### Scaling the data  
 
-Next, we apply a linear transformation (‘scaling’) that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The `ScaleData` function:
+Next, we apply a linear transformation ("scaling") that is a standard pre-processing step prior to dimensional reduction techniques like PCA. The `ScaleData()` function:
 
   - Shifts the expression of each gene, so that the mean expression across cells is 0
   - Scales the expression of each gene, so that the variance across cells is 1
   - This step gives equal weight in downstream analyses, so that highly-expressed genes do not dominate
   - The results of this are stored in `pbmc[["RNA"]]@scale.data`
-
+  
+  
 We can also take care of unwanted sources of variation in this step. Some things to think about regressing include:
 
-- cell-cell variation in gene expression driven by batch (for example, two 10X runs from different days)
-- cell alignment rate 
-- number of detected molecules
-- mitochondrial gene expression.
+  - cell-cell variation in gene expression driven by batch (for example, two 10X runs from different days)
+  - cell alignment rate 
+  - number of detected molecules
+  - mitochondrial gene expression  
 
-Today, we will regress out differences based on mitochondrial gene expression.
-```{r}
-all.genes <- rownames(pbmc)
-pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress = "percent.mt")
-```
-This will take a few minutes. 
+To regress out the differences due to mitrochondrial expression, we can use the `vars.to.regress` option.  
 
-What if it's too slow? Can we make it faster?
+This will take a while to run, so if you have downloaded the output files already (available on the course website as ["Output files"](http://tiny.ucsf.edu/dsiscrnaseq) (right-click and save as .zip file), then you can leave this chunk commented out and skip to the next chunk.     
 
 ```{r}
 ?ScaleData
-str(VariableFeatures(pbmc))
-#commented out so this code does not run, see reason below this cell
-#pbmc <- ScaleData(pbmc, features = VariableFeatures(pbmc))
+all.genes <- rownames(pbmc)
+pbmc <- ScaleData(pbmc, features = all.genes, vars.to.regress = "percent.mt", verbose=FALSE)
 ```
+
+</br> 
+
+
+#### Saving and reading output     
+
+You can save the object at this point so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above. The output is provided so we will use the `readRDS` function to read it in (this will create a new Seurat object with the same name, i.e. pbmc in this case).    
+
+```{r}
+projdir <- sub("src", "", getwd()) 
+
+# saveRDS(pbmc, file = paste0(projdir, "./output/pbmc_tutorial_scaled.rds"))
+# readRDS(paste0(projdir, "./output/pbmc_tutorial_scaled.rds"))
+```
+
+
 Scaling is an essential step in the Seurat workflow, but is only truly necessary for genes that will be used as input to PCA (the 2000 `VariableFeatures` we previously calculated).
 
-By default, `ScaleData` will perform scaling on all genes. However, it is possible to perfrom scaling on only the 2000 variable genes, the genes necessary to generate your PCA and clustering results in the next workbook.
+By default, `ScaleData` will perform scaling on all genes. However, it is possible to perform scaling on only the 2000 variable genes, the genes necessary to generate your PCA and clustering results in the next workbook.
 
-If we do select to only scale the 2000 variable genes, our PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown below with `DoHeatmap`) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial.
-
-### Saving
-
-You can save the object at this point so that it can easily be loaded back in without having to rerun the computationally intensive steps performed above, or easily shared with collaborators.
-
-An example of how to load the data back in is also included, although commented out for now.
-```{r}
-saveRDS(pbmc, file = "./output/pbmc_tutorial.rds")
-#pbmc = loadRDS("./output/pbmc_tutorial.rds")
-```
-
-### Confounding variation regression:
-
-In our workshop today, and in Seurat v2, the `ScaleData` function is used to remove unwanted sources of variation from a single-cell dataset. This functionality is preserved in ScaleData in Seurat v3. However, this `ScaleData` function is essentially deprecated and will slowly be abandoned as Seurat is updated.
-
-An alternative (and arguably better technique), `SCTransform`, is also present in Seurat v3. An example of using the new regression is below.
+If we do select to only scale the 2000 variable genes, our PCA and clustering results will be unaffected. However, Seurat heatmaps (produced as shown later with `DoHeatmap()`) require genes in the heatmap to be scaled, to make sure highly-expressed genes don’t dominate the heatmap. To make sure we don’t leave any genes out of the heatmap later, we are scaling all genes in this tutorial. But if we wanted to use just the variable genes as input, we could modify the code above (left commented out here):     
 
 ```{r}
-#Commented out; do not run, this code to simply to provide an in-context example
-#pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = TRUE)
+str(VariableFeatures(pbmc))
+# filt.genes <- VariableFeatures(pbmc)
+# pbmc <- ScaleData(pbmc, features = filt.genes) ## uses filtered genes rather than all genes
 ```
-The Seurat developers recommend the use of the new normalization workflow, SCTransform. The method is described in their [recent publication](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-019-1874-1) (10.1186/s13059-019-1874-1), with a separate vignette using Seurat v3 here: https://satijalab.org/seurat/v3.0/sctransform_vignette.html. As with ScaleData, you can direct the function SCTransform to regress uninteresting variation with the `vars.to.regress` parameter.
 
-The `SCTransform` step actually replaces `NormalizeData`, `ScaleData`, and `FindVariableFeatures`, although we went through them initially to familiarize ourselves with the concepts. In your future workflow, you can follow the workflow of the [SCTransform vignette](https://satijalab.org/seurat/v3.0/sctransform_vignette.html).
+
+</br>  
+
+#### The SCTransform function in Seurat v3  
+
+In this workshop and in Seurat v2, the `ScaleData()` function is used to remove unwanted sources of variation from a single-cell dataset (e.g. differences due to mitrochondrial expression). This functionality is preserved in `ScaleData()` in Seurat v3. However, this function is essentially deprecated and will slowly be abandoned as Seurat is updated. The `SCTransform()` step actually replaces `NormalizeData()`, `ScaleData()`, and `FindVariableFeatures()`, although we went through them initially to familiarize ourselves with the concepts. The use of the `SCTransform()` function is below, but we will leave this commented out.   
+
+```{r} 
+# pbmc <- SCTransform(pbmc, vars.to.regress = "percent.mt", verbose = TRUE)
+``` 
+
+In your future workflows, you can follow the [SCTransform vignette](https://satijalab.org/seurat/v3.0/sctransform_vignette.html).   
+

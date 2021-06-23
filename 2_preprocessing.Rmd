@@ -1,17 +1,15 @@
 ---
 title: "Data preprocessing"
-authors: "Rebecca Jaszczak, Karla Lindquist, Angelo Pelonero"
-date: "3/2/2020"
+authors: "Karla Lindquist (with Angelo Pelonero and Rebecca Jaszczak)"
+date: "3/30/2021"
 output: html_notebook
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+</br>
 
-### Standard pre-processing workflow
+#### Standard pre-processing workflow
 
-The steps below encompass the standard pre-processing workflow for scRNA-seq data in Seurat. These represent the selection and filtration of cells based on QC metrics, data normalization and scaling, and the detection of highly variable features (often features = genes for ScRNAseq).
+The steps below encompass the standard pre-processing workflow for scRNA-seq data in Seurat. These represent the selection and filtration of cells based on QC metrics, data normalization and scaling, and the detection of highly variable features (usually genes).
 
 Seurat allows you to easily explore QC metrics and filter cells based on any user-defined criteria. A few QC metrics [commonly used](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4758103/) by the community include:
 
@@ -21,50 +19,61 @@ Seurat allows you to easily explore QC metrics and filter cells based on any use
   - Similarly, the total number of molecules detected within a cell (correlates strongly with unique genes)
   - The percentage of reads that map to the mitochondrial genome
       - Low-quality / dying cells often exhibit extensive mitochondrial contamination
-  - We calculate mitochondrial QC metrics with the `PercentageFeatureSet` function, which calculates the percentage of counts originating from a set of features
-  - We use the set of all genes starting with `MT-` as a set of mitochondrial genes:
+  - Low UMI counts
+      
+For more information about mitochondrial contamination, see this [10X Genomics FAQ](https://kb.10xgenomics.com/hc/en-us/articles/360001086611-Why-do-I-see-a-high-level-of-mitochondrial-gene-expression-) post.   
+      
+We calculate mitochondrial QC metrics with the `PercentageFeatureSet` function, which calculates the percentage of counts originating from a set of features. We use the set of all genes starting with `MT-` as a set of mitochondrial genes:
 ```{r}
 # The [[ operator can add columns to object metadata. This is a great place to stash QC stats
 pbmc[["percent.mt"]] <- PercentageFeatureSet(object = pbmc, pattern = "^MT-")
 ```
 
+
 Where are QC metrics stored in Seurat?
 
-The number of unique genes (Features) and total molecules (Counts) are automatically calculated during `CreateSeuratObject` You can find these metrics stored in the object "metadata:"
+The number of unique genes (Features) and total molecules (Counts) are automatically calculated during `CreateSeuratObject` You can find these metrics stored in the meta.data slot. Let's look at the first 6 cells:  
 ```{r}
-# Show QC metrics for the first 5 cells
-head(pbmc@meta.data, 5)
+head(pbmc@meta.data)
 ```
 
-We now visualize our QC metrics and use these to filter cells.
+We now visualize our QC metrics and use these to filter cells. Violin plots are created with the `VlnPlot()` function (violin plots are like smoothed box plots with the width reflecting the probability that observations fall in that range).  
 ```{r}
-# Visualize QC metrics as a violin plot
 VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 ```
 
+The `FeatureScatter()` function is typically used to visualize feature-feature (gene-gene) relationships, but can be used for anything calculated by the object, e.g. columns in object metadata, PC scores etc. The Person's correlation coefficient between the two features is shown at the top.  
 
 ```{r}
-# FeatureScatter is typically used to visualize feature-feature relationships, but can be used
-# for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
-
+?FeatureScatter
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
 plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
-CombinePlots(plots = list(plot1, plot2))
+plot1 | plot2 ## uses patchwork package to place plots side by side 
 ```
 
-Here we filter cells that have unique feature counts over 2,500 or less than 200 and those that have >5% mitochondrial counts; this will remove cell doublets and low quality cells:
+Here we filter cells that have unique feature counts over 2,500 or less than 200 and those that have >5% mitochondrial counts; this will remove cell doublets and low quality cells. To subset Seurat objects, you want to use the `subset()` function from Seurat. learn more about various Seurat methods by calling up the help documentation with ?`Seurat-methods`.      
 ```{r}
+?`Seurat-methods`
 pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 2500 & percent.mt < 5)
+dim(pbmc)
 ```
 
-Now let's plot these again to see the differences:
+
+Remember: features=genes, counts=UMIs and these are highly correlated, so often filtering on one does the same for the other. But if you wanted to filter on UMIs (e.g. keeping those you could have done this too, although we already did this when we read in the data using `CreateSeuratObject`:  
+
 ```{r}
-# Visualize QC metrics as a violin plot
+pbmc <- subset(pbmc, subset = nCount_RNA > 3)
+dim(pbmc)
+```
+
+
+
+
+Now let's plot these again to see the differences (compare to plots above):
+```{r}
 VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
-# FeatureScatter is typically used to visualize feature-feature relationships, but can be used
-# for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
 
 plot1 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "percent.mt")
 plot2 <- FeatureScatter(pbmc, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
-CombinePlots(plots = list(plot1, plot2))
+plot1 | plot2  
 ```
