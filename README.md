@@ -20,15 +20,11 @@ Branch "master" should function as intended if cloned, but for verified material
 
 #### *Please do not wait until the day of the workshop to do these installations*! We cannot spend class time working through installation issues.
 
-If you have trouble with installations up until the day before the workshop, please email both Angelo and Karla:  
-
-- Angelo Pelonero: [angelo.pelonero@ucsf.edu](mailto:angelo.pelonero@ucsf.edu)
+If you have trouble with installations up until the day before the workshop, please email the instructor:  
 
 - Karla Lindquist: [karla.lindquist@ucsf.edu](mailto:karla.lindquist@ucsf.edu)  
 
-Instructors will also be in the classroom half an hour before a workshop begins. However, this time will be for minor troubleshooting issues only. If you have major issues (or if you wait until this time to begin your installations) we cannot guarantee that you will be set up in time to follow along with the workshop.     
-
-The previous version of this workshop relied on Python 3.x - Seurat has released an update to remove this dependency, so we no longer require a Python install of UMAP for this workshop.
+Previous versions of this workshop relied on Python 3.x - Seurat has released an update to remove this dependency, so we no longer require a Python install of UMAP for this workshop.
 
 ## Installing R Packages:
 We package R installations in .Rmd format - you'll need to have [R](https://www.r-project.org) and [RStudio](https://www.rstudio.com/products/rstudio/download/) installed to proceed.
@@ -49,7 +45,7 @@ This workshop outlines the general workflow for analysis of scRNA seq data that 
 The majority of this workshop (notebooks 1-5) uses data output from the 10x Genomics CellRanger Pipeline. This software can demultiplexes, counts, and aggregates raw basecall data directly from Illumina sequencers:
 
 ![General scRNAseq workflow](https://support.10xgenomics.com/img/cellranger-workflows/cellranger_simplest_1_bw_2.png)
-######Source: 10x Genomics
+Source: 10x Genomics
 
 __Please note that this pipeline is not necessary for this workshop__ but will be needed to use your data with these notebooks. Visit the [10x Genomics CellRanger Pipeline website](https://support.10xgenomics.com/single-cell-gene-expression/software/pipelines/latest/what-is-cell-ranger) for installation instructions, user guides, and more information.
 
